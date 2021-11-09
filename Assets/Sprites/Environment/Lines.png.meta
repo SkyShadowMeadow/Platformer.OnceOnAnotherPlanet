@@ -104,9 +104,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 823
+        y: 887
         width: 12332
-        height: 246
+        height: 294
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,10 +124,10 @@ TextureImporter:
       name: Lines_1
       rect:
         serializedVersion: 2
-        x: 196
-        y: 505
-        width: 12017
-        height: 172
+        x: 0
+        y: 0
+        width: 12332
+        height: 645
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,10 +145,10 @@ TextureImporter:
       name: Lines_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 57
-        width: 12332
-        height: 358
+        x: 32
+        y: 662
+        width: 12300
+        height: 171
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
