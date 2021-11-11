@@ -23,5 +23,8 @@ public class PlayerData : ScriptableObject
     public float CheckRadius = 0.3f;
     public LayerMask WhatIsGround;
     public LayerMask WhatIsStairs;
+    public LayerMask WhatIsPltform;
+
+
 
 }

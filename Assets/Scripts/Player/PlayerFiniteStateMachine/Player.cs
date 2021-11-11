@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static event OnThroughtPlatform OnIdleState;
+    public delegate void OnThroughtPlatform();
+
     #region Components
     [SerializeField] private PlayerData _playerData;
     public PlayerStateMachine PlayerStateMachine { get; private set; }
@@ -56,8 +60,6 @@ public class Player : MonoBehaviour
     {
         CurrentVelocity = MyRigidbody2D.velocity; 
         PlayerStateMachine.CurrentState.LogicUpdate();
-        //Debug.Log("Update player " + InputHandler.RawMoveInput);
-        //Debug.Log(CurrentVelocity.y);
     }
     private void FixedUpdate()
     {
@@ -79,10 +81,19 @@ public class Player : MonoBehaviour
     {
         return Physics2D.OverlapCircle(_checkGroundPoint.position, _playerData.CheckRadius, _playerData.WhatIsGround);
     }
+
+    public bool CheckOnThePlatform()
+    {
+        return Physics2D.OverlapCircle(_checkGroundPoint.position, _playerData.CheckRadius, _playerData.WhatIsPltform);
+    }
     public bool CheckOnTheStairs()
     {
         return Physics2D.OverlapCircle(_checkStairPoint.position,  
                                     _playerData.CheckDistanceToStairs, _playerData.WhatIsStairs);
+    }
+    public void StartEventClimbDown()
+    {
+        OnIdleState();
     }
     public void IfShouldFlip(int xInput)
     {

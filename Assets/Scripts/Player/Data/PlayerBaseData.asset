@@ -18,10 +18,13 @@ MonoBehaviour:
   CoyoteTime: 0.1
   ClimbSpeed: 5
   CheckDistanceToStairs: 0.2
-  CheckRadius: 0.3
+  CheckRadius: 0.2
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 8
   WhatIsStairs:
     serializedVersion: 2
     m_Bits: 128
+  WhatIsPltform:
+    serializedVersion: 2
+    m_Bits: 256

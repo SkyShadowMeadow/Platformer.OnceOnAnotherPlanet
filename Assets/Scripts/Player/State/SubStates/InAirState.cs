@@ -8,6 +8,7 @@ public class InAirState : PlayerState
     protected int _xInput;
     protected int _countOfJumps;
     protected bool _jumpIsStarted;
+    protected bool _isOnThePlatform;
 
     public InAirState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
     {
@@ -17,6 +18,7 @@ public class InAirState : PlayerState
     {
         base.DoChecks();
         _isOnTheGround = _player.CheckOnTheGround();
+        _isOnThePlatform = _player.CheckOnThePlatform();
     }
 
     public override void Enter()
@@ -40,7 +42,7 @@ public class InAirState : PlayerState
 
         DoChecks();
         //Debug.Log("Jumps count after DoChecks" + _countOfJumps);
-        if(_isOnTheGround && _player.CurrentVelocity.y < 0.01f && Mathf.Abs(_xInput) < 0.01f)
+        if((_isOnTheGround || _isOnThePlatform) && _player.CurrentVelocity.y < 0.01f && Mathf.Abs(_xInput) < 0.01f)
         {
             ToLanded();
         }
@@ -51,6 +53,10 @@ public class InAirState : PlayerState
         else if(_player.JumpState.CanJump() && _jumpIsStarted)
         {
             ToSecondJump();
+        }
+        else if (_isOnThePlatform)
+        {
+            _playerStateMachine.ChangeState(_player.IdlingState);
         }
         else
         {

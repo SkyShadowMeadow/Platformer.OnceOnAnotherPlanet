@@ -8,6 +8,8 @@ public class TouchedStairState : PlayerState
     protected float _yInput;
     protected float _xInput;
     protected bool _jumpIsStarted;
+    protected bool _isOnStairs;
+    protected bool _isOnSThePlatform;
     public TouchedStairState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
     {
     }
@@ -35,11 +37,14 @@ public class TouchedStairState : PlayerState
     {
         base.LogicUpdate();
         _isGrounded = _player.CheckOnTheGround();
+        _isOnStairs = _player.CheckOnTheStairs();
+        _isOnSThePlatform = _player.CheckOnThePlatform();
         _xInput = _player.InputHandler.NormalizedMoveInputX;
         _yInput = _player.InputHandler.NormalizedMoveInputY;
         _jumpIsStarted = _player.InputHandler.JumpIsStarted;
+
         
-        if(_isGrounded && _yInput < 0.0f)
+        if(_isGrounded || !_isOnStairs)
         {
             _playerStateMachine.ChangeState(_player.IdlingState);
         }

@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
     public Vector2 RawMoveInput { get; private set; }
     public int NormalizedMoveInputX { get; private set; } 
     public int NormalizedMoveInputY { get; private set; } 
+    public int RealMoveInputY { get; private set; } 
     public bool JumpIsStarted { get; set; }
     public int CountOfJump { get; set; }
 
@@ -22,6 +23,7 @@ public class InputHandler : MonoBehaviour
     {
 
        RawMoveInput = context.ReadValue<Vector2>();
+       RealMoveInputY = (int)(RawMoveInput.y * Vector2.up).y;
        NormalizedMoveInputX = (int)(RawMoveInput.x * Vector2.right).normalized.x;
        NormalizedMoveInputY = (int)(RawMoveInput.y * Vector2.up).normalized.y;
     }

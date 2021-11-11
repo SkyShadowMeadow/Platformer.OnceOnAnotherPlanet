@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class IdlingState : GroundedState
 {
+     
     public IdlingState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
     {
     }
@@ -17,6 +19,7 @@ public class IdlingState : GroundedState
     {
         base.Enter();
         _player.SetVelocityX(0f);
+       // _player.CheckWhatHitOnGround();
     }
 
     public override void Exit()
