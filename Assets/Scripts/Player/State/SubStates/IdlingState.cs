@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class IdlingState : GroundedState
 {
-     
+
     public IdlingState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
     {
     }
