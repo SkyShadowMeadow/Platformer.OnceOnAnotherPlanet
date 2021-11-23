@@ -5755,7 +5755,6 @@ GameObject:
   - component: {fileID: 1827743669}
   - component: {fileID: 1827743671}
   - component: {fileID: 1827743670}
-  - component: {fileID: 1827743672}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Untagged
@@ -5817,22 +5816,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1827743672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827743668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7a9ae327a9c5a24ea0cb97d0b9d1e56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyData: {fileID: 11400000, guid: cce1826b675fda14aa995acd11374d84, type: 2}
-  _patrolPoints:
-  - {fileID: 687409038}
-  - {fileID: 1237239242}
 --- !u!4 &1835451586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 688310357757276551, guid: c4c8519c1ea6b58479dc76889cb6ca27, type: 3}
