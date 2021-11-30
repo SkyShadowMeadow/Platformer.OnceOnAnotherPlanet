@@ -3268,7 +3268,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.935836, y: 6.1824646, z: -14}
+  m_LocalPosition: {x: -5.948681, y: 6.1824646, z: -14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1005740287}
@@ -5503,7 +5503,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680198521}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.017688, y: 4.2180004, z: -21.5}
+  m_LocalPosition: {x: -12.02, y: 4.2180004, z: -21.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1749405644}
@@ -5755,8 +5755,8 @@ GameObject:
   - component: {fileID: 1827743669}
   - component: {fileID: 1827743671}
   - component: {fileID: 1827743670}
-  - component: {fileID: 1827743672}
   - component: {fileID: 1827743673}
+  - component: {fileID: 1827743672}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Untagged
@@ -5830,6 +5830,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a9ae327a9c5a24ea0cb97d0b9d1e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pointsToPatrol:
+  - {fileID: 687409038}
+  - {fileID: 1237239242}
 --- !u!68 &1827743673
 EdgeCollider2D:
   m_ObjectHideFlags: 0

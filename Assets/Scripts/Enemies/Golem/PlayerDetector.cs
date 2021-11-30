@@ -4,34 +4,37 @@ using UnityEngine;
 
 public class PlayerDetector : MonoBehaviour
 {
-    public bool EnemyInRange => _detectedPlayer != null;
+    private bool _enemyInRange;
 
     private Player _detectedPlayer;
+    GameObject _player;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.GetComponent<Player>())
         {
             _detectedPlayer = other.GetComponent<Player>();
+            _player = other.gameObject;
+            _enemyInRange = true;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.GetComponent<Player>())
         {
-            StartCoroutine(ClearDetectedPlayerAfterDelay());
+            _detectedPlayer = null;
+            _enemyInRange = false;
         }
     }
+    public bool IsEnemyInRange() => _enemyInRange;
 
-    private IEnumerator ClearDetectedPlayerAfterDelay()
+    public Vector2 GetNearestPlayerPosition()
     {
-        yield return new WaitForSeconds(3f);
-        _detectedPlayer = null;
-    }
-
-    public Vector3 GetNearestPlayerPosition()
-    {
-        return _detectedPlayer?.transform.position ?? Vector3.zero;
+        if(_detectedPlayer != null)
+        {
+            return _player.transform.position;
+        }
+        else return Vector2.zero;
     }
 }

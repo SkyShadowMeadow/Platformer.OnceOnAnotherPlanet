@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MoveToThePoint : IState
 {
-    private const float MOVE_SPEED = 6F;
+    private const float MOVE_SPEED = 3F;
 
     private readonly Golem _golem;
     private readonly Animator _animator;
+
     private static readonly int IsPatroling = Animator.StringToHash("IsPatroling");
+
+    private Rigidbody2D _rigidbody2D;
     private Transform[] _pointsToPatrol;
     private Transform nearestPoint;
+    private float _minDistance = 0.1f;
+    private int _currentPoint;
+    private bool pointIsReached { get; }
 
     public MoveToThePoint(Golem golem, Animator animator)
     {
@@ -19,8 +26,10 @@ public class MoveToThePoint : IState
     }
     public void OnEnter()
     {
+        _rigidbody2D = _golem.GetComponent<Rigidbody2D>();
         _pointsToPatrol = _golem.GetPointsToPatrol();   
         nearestPoint = FindNearestPatrolPoint();
+        _animator.SetBool(IsPatroling, true);
     }
     public void Tick()
     {
@@ -28,26 +37,40 @@ public class MoveToThePoint : IState
         {
             Move();
         }
+        else
+        {
+
+        }
     }
     private Transform FindNearestPatrolPoint()
     {
-        float maxDistance = 0f;
+        float maxDistance = Mathf.Infinity;
         int indexOfTheNearestPoint = 0;
 
         for (int i = 0; i < _pointsToPatrol.Length; i++)
         {
-            float distanceToThePoint = Mathf.Abs(Vector2.Distance(_golem.transform.position, _pointsToPatrol[i].position));
-            if (maxDistance < distanceToThePoint)
+            float distanceToThePoint = Vector2.Distance(_golem.transform.position, _pointsToPatrol[i].position);
+            if (distanceToThePoint < maxDistance && distanceToThePoint > _minDistance)
             {
                 maxDistance = distanceToThePoint;
                 indexOfTheNearestPoint = i;
             }
         }
+        _currentPoint = indexOfTheNearestPoint;
         return _pointsToPatrol[indexOfTheNearestPoint];
+    }
+    public bool HasReachedCurrentPoint()
+    {
+        float distanceToThePoint = Vector2.Distance(_golem.transform.position, _pointsToPatrol[_currentPoint].position);
+        if (distanceToThePoint <= _minDistance)
+        {
+            return true;
+        }
+        else return false;
     }
     void Move()
     {
-        _golem.GetComponent<Rigidbody2D>().velocity = nearestPoint.position * MOVE_SPEED * Time.deltaTime;
+        _golem.transform.position = Vector2.MoveTowards(_golem.transform.position, nearestPoint.position, MOVE_SPEED * Time.deltaTime);
     }
     public void OnExit()
     {
