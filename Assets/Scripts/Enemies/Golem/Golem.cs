@@ -6,20 +6,14 @@ using UnityEngine;
 public class Golem : MonoBehaviour
 {
     public event Action<int> OnMovedChanged;
-    //private int _currentPoint { get; }
 
     [SerializeField] private Transform[] _pointsToPatrol;
+    [SerializeField] private float _damage = 1f;
 
-    public Transform[] GetPointsToPatrol()
-    {
-        return _pointsToPatrol;
-    }
+    public float GetDamage() => _damage;
+    public Transform[] GetPointsToPatrol() => _pointsToPatrol;
 
     private GolemStateMachine _golemStateMachine;
-    //private int _gathered;
-
-    //public GatherableResource Target { get; set; }
-    //public StockPile StockPile { get; set; }
 
     private void Awake()
     {

@@ -17,7 +17,7 @@ public class AttackState : IState
 
     public void Tick()
     {
-        Debug.Log("I'm attacking");
+        //Debug.Log("I'm attacking");
     }
 
     public void OnEnter()
