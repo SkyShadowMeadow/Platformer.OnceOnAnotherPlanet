@@ -33,6 +33,7 @@ public class Golem : MonoBehaviour
         At(moveToThePoint, pursueState, HasEnemyInRange());
         At(suspitionState, pursueState, HasEnemyInRange());
         At(pursueState, attackState, HasReachedThePlayer());
+        At(pursueState, suspitionState, HasPlayerOutOfRange());
         At(moveToThePoint, attackState, HasReachedThePlayer());
         At(suspitionState, attackState, HasReachedThePlayer());
         At(attackState, pursueState, HasEnemyTuPursue());
@@ -46,7 +47,7 @@ public class Golem : MonoBehaviour
         Func<bool> HasStayedEnough() => () => suspitionState.EnoughOfBeingSuspitious();
         Func<bool> HasReachedThePlayer() => () => pursueState.PlayerIsReached();
         Func<bool> HasEnemyInRange() => () => playerDetector.IsEnemyInRange();
-        Func<bool> HasPlayerOutOfRange() => () => !playerDetector.IsEnemyInRange() && !playerDetector.IsEnemyInRange();
+        Func<bool> HasPlayerOutOfRange() => () => !playerDetector.IsEnemyInRange() && !pursueState.PlayerIsReached();
         Func<bool> HasEnemyTuPursue() => () => playerDetector.IsEnemyInRange() && !pursueState.PlayerIsReached();
     }
 

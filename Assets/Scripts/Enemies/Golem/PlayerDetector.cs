@@ -31,7 +31,7 @@ public class PlayerDetector : MonoBehaviour
 
     public Vector2 GetNearestPlayerPosition()
     {
-        if(_detectedPlayer != null)
+        if(_detectedPlayer != null && _enemyInRange)
         {
             return _player.transform.position;
         }
