@@ -21,8 +21,11 @@ public class PlayerHealthLogic : MonoBehaviour
     public void ApplyDamage(float damage)
     {
         _healthPoints -= damage;
-        Debug.Log("HealthPoints: " + _healthPoints);
-        _playerHealthView.RemoveHearts(_healthPoints);
+
+        if (_healthPoints % 1 == 0)
+            _playerHealthView.RemoveWholeHearts(_healthPoints);
+
+        else _playerHealthView.RemoveHalfHearts(_healthPoints);
     }
     void Start()
     {

@@ -3,43 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdlingState : GroundedState
+public class IdlingState : IState
 {
+    private readonly Player _player;
+    private readonly Animator _animator;
+    private static readonly int IsIdling = Animator.StringToHash("IsIdling");
 
-    public IdlingState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
+    public IdlingState(Player player, Animator animator)
     {
+        _player = player;
+        _animator = animator;
+    }
+    public void OnEnter()
+    {
+        _animator.SetBool(IsIdling, true);
     }
 
-    public override void DoChecks()
+    public void OnExit()
     {
-        base.DoChecks();
+        _animator.SetBool(IsIdling, false);
     }
 
-    public override void Enter()
+    public void Tick()
     {
-        base.Enter();
-        _player.SetVelocityX(0f);
-       // _player.CheckWhatHitOnGround();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-
-        base.LogicUpdate();
-
-        if (_xInput != 0) 
-        {
-            _playerStateMachine.ChangeState(_player.MovingState);
-        }    
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
     }
 }

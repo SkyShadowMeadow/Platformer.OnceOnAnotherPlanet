@@ -2,38 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LandedState : GroundedState
+public class LandedState : IState
 {
-    public LandedState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
+    private readonly StateChangesTracker _stateChangesTracker;
+    private readonly Animator _animator;
+
+    private static readonly int IsLanding = Animator.StringToHash("IsLanding");
+    private bool _isAnimationFinished;
+
+    public LandedState(Animator animator, StateChangesTracker stateChangesTracker)
     {
+        _animator = animator;
+        _stateChangesTracker = stateChangesTracker;
     }
 
-    public override void DoChecks()
+
+    public void OnEnter()
     {
-        base.DoChecks();
+        _animator.SetBool(IsLanding, true);
+        _stateChangesTracker.ChangeAnimationTrigger(false);
     }
 
-    public override void Enter()
+    public void Tick()
     {
-        base.Enter();
+    }
+    public void OnExit()
+    {
+        _animator.SetBool(IsLanding, false);
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-        if (_isAnimationFinished)
-        {
-            _playerStateMachine.ChangeState(_player.IdlingState);
-        }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
 }

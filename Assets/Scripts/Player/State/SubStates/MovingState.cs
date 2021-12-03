@@ -2,40 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingState : GroundedState
+public class MovingState : IState
 {
-    public MovingState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
+    private readonly Player _player;
+    private readonly PlayerData _playerData;
+    private readonly InputHandler _inputHandler;
+
+    private readonly Animator _animator;
+    private static readonly int IsMoving = Animator.StringToHash("IsRunning");
+
+
+    public MovingState(Player player, PlayerData playerData, Animator animator, InputHandler inputHandler)
     {
+        _player = player;
+        _playerData = playerData;
+        _inputHandler = inputHandler;
+        _animator = animator;
     }
 
-    public override void DoChecks()
+    public void OnEnter()
     {
-        base.DoChecks();
+        _animator.SetBool(IsMoving, true);
     }
 
-    public override void Enter()
+    public void OnExit()
     {
-        base.Enter();
+        _animator.SetBool(IsMoving, false);
     }
 
-    public override void Exit()
+    public void Tick()
     {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-        _player.IfShouldFlip(_xInput);
-        _player.SetVelocityX(_playerData.MovenmentSpeed * _xInput );
-        if(_xInput == 0)
-        {
-            _playerStateMachine.ChangeState(_player.IdlingState);
-        }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
+        _player.SetVelocityX(_playerData.MovenmentSpeed * _inputHandler.NormalizedMoveInputX);
+        _player.IfShouldFlip(_inputHandler.NormalizedMoveInputX);
     }
 }

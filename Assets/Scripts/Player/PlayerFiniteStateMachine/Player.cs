@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     public static event OnThroughtPlatform OnIdleState;
     public delegate void OnThroughtPlatform();
-
+    private StateChangesTracker _stateChangesTracker;
     #region Components
     [SerializeField] private PlayerData _playerData;
     public PlayerStateMachine PlayerStateMachine { get; private set; }
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public IdlingState IdlingState { get; private set; }
     public MovingState MovingState { get; private set; }
     public JumpState JumpState { get; private set; }
-    public InAirState InAirState { get; private set; }
+    //public InAirState InAirState { get; private set; }
     public LandedState LandedState { get; private set; }
     public ClimbingState ClimbingState { get; private set; }
     public float NormalGravityScale { get; private set; }
@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
     #endregion
     private Vector2 _workspace;
 
-    public Vector2 CurrentVelocity { get; private set; }
     public int CurrentFlipDirection { get; private set; }
 
     [SerializeField] private Transform _checkGroundPoint;
@@ -36,57 +35,69 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        PlayerStateMachine = new PlayerStateMachine(); 
-
-        IdlingState = new IdlingState(this, PlayerStateMachine, _playerData, "IsIdling");
-        MovingState = new MovingState(this, PlayerStateMachine, _playerData, "IsRunning");
-        JumpState = new JumpState(this, PlayerStateMachine, _playerData, "InTheAir");
-        InAirState = new InAirState(this, PlayerStateMachine, _playerData, "InTheAir");
-        LandedState = new LandedState(this, PlayerStateMachine, _playerData, "IsLanding");
-        ClimbingState = new ClimbingState(this, PlayerStateMachine, _playerData, "IsClimbing");
-    }
-    private void Start()
-    {
         MyRigidbody2D = GetComponent<Rigidbody2D>();
         PlayerAnimator = GetComponentInChildren<Animator>();
         InputHandler = GetComponent<InputHandler>();
         CurrentFlipDirection = 1;
-        PlayerStateMachine.Initialize(IdlingState);
         NormalGravityScale = MyRigidbody2D.gravityScale;
+        _stateChangesTracker = GetComponent<StateChangesTracker>();
+        PlayerStateMachine = new PlayerStateMachine();
 
+        IdlingState = new IdlingState(this, PlayerAnimator);
+        MovingState = new MovingState(this, _playerData, PlayerAnimator, InputHandler);
+        JumpState = new JumpState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
+        //InAirState = new InAirState(this, PlayerStateMachine, _playerData, "InTheAir");
+        LandedState = new LandedState(PlayerAnimator, _stateChangesTracker);
+        ClimbingState = new ClimbingState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
 
+        At(IdlingState, MovingState, HasStartedToMove());
+        At(MovingState, IdlingState, HasStoppedMoving());
+        At(IdlingState, JumpState, CanJump());
+        At(MovingState, JumpState, CanJump());
+        At(JumpState, LandedState, HasFinishedTheJump());
+        At(LandedState, IdlingState, HasLanded());
+
+        At(JumpState, MovingState, HasMovedRightAfterJump());
+        At(IdlingState, ClimbingState, CanClimb());
+        At(ClimbingState, IdlingState, HasReachedTheGround());
+
+        PlayerStateMachine.SetState(IdlingState);
+
+        void At(IState to, IState from, Func<bool> condition) => PlayerStateMachine.AddTransition(to, from, condition);
+
+        Func<bool> HasStartedToMove() => () => _stateChangesTracker.HasStartedToMove();
+        Func<bool> HasStoppedMoving() => () => _stateChangesTracker.HasStoppedMoving();
+        Func<bool> CanJump() => () => InputHandler.JumpIsStarted && _stateChangesTracker.HasEnoughJumps();
+        Func<bool> HasLanded() => () => _stateChangesTracker.HasLanded();
+        Func<bool> HasFinishedTheJump() => () => _stateChangesTracker.HasFinishedTheJump();
+        Func<bool> HasMovedRightAfterJump() => () => _stateChangesTracker.HasMovedRightAfterJump();
+        Func<bool> CanClimb() => () => _stateChangesTracker.CanClimb();
+        Func<bool> HasReachedTheGround() => () => _stateChangesTracker.HasReachedClimbDestination();
     }
-    private void Update()
-    {
-        CurrentVelocity = MyRigidbody2D.velocity; 
-        PlayerStateMachine.CurrentState.LogicUpdate();
-    }
-    private void FixedUpdate()
-    {
-        PlayerStateMachine.CurrentState.PhysicsUpdate();
-    }
+    private void Update() => PlayerStateMachine.Tick();
+
     public void SetVelocityX(float velocity)
     {
-        _workspace.Set(velocity, CurrentVelocity.y);
+        _workspace.Set(velocity, GetCurrentVelocity().y);
         MyRigidbody2D.velocity = _workspace;
-        CurrentVelocity = _workspace;
     }
     public void SetVelocityY(float velocity)
     {
-        _workspace.Set(CurrentVelocity.x, velocity);
+        _workspace.Set(GetCurrentVelocity().x, velocity);
         MyRigidbody2D.velocity = _workspace;
-        CurrentVelocity = _workspace;
     }
-    public bool CheckOnTheGround()
+    public Vector2 GetCurrentVelocity() => MyRigidbody2D.velocity;
+
+    public bool IsOnTheGround()
     {
         return Physics2D.OverlapCircle(_checkGroundPoint.position, _playerData.CheckRadius, _playerData.WhatIsGround);
     }
 
-    public bool CheckOnThePlatform()
+    public bool IsOnThePlatform()
     {
         return Physics2D.OverlapCircle(_checkGroundPoint.position, _playerData.CheckRadius, _playerData.WhatIsPltform);
     }
-    public bool CheckOnTheStairs()
+    public bool IsOnTheStairs()
     {
         return Physics2D.OverlapCircle(_checkStairPoint.position,  
                                     _playerData.CheckDistanceToStairs, _playerData.WhatIsStairs);
@@ -110,6 +121,4 @@ public class Player : MonoBehaviour
     {
         MyRigidbody2D.gravityScale = NormalGravityScale;
     }
-    public void AnimationTrigger() => PlayerStateMachine.CurrentState.AnimationTrigger();
-    public void FinishAnimationTrigger() => PlayerStateMachine.CurrentState.FinishAnimationTrigger();
 }

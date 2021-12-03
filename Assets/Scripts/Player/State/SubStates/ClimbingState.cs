@@ -2,46 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClimbingState : TouchedStairState
+public class ClimbingState : IState
 {
-    public ClimbingState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationStateName) : base(player, playerStateMachine, playerData, animationStateName)
+    private readonly Player _player;
+    private readonly PlayerData _playerData;
+    private readonly InputHandler _inputHandler;
+    private readonly StateChangesTracker _stateChangesTracker;
+    private readonly Animator _animator;
+
+    private static readonly int IsClimbing = Animator.StringToHash("IsClimbing");
+    private float _jumpSpeed;
+
+    public ClimbingState(Player player, PlayerData playerData, Animator animator, InputHandler inputHandler, StateChangesTracker stateChangesTracker)
     {
+        _player = player;
+        _playerData = playerData;
+        _inputHandler = inputHandler;
+        _animator = animator;
+        _stateChangesTracker = stateChangesTracker;
     }
 
-    public override void DoChecks()
+    public void OnEnter()
     {
-        base.DoChecks();
+        _animator.SetBool(IsClimbing, true);
+        _player.MyRigidbody2D.gravityScale = 0;
     }
 
-    public override void Enter()
+    public void OnExit()
     {
-        base.Enter();
-
+        _player.RestoreGravity();
+        _player.PlayerAnimator.speed = 1;
+        _animator.SetBool(IsClimbing, false);
     }
 
-    public override void Exit()
+    public void Tick()
     {
-        base.Exit();
-        Debug.Log("Exit Climb");
-    }
+        float yInput = _inputHandler.NormalizedMoveInputY;
+        _player.SetVelocityY(_playerData.ClimbSpeed * yInput);
 
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-        _player.SetVelocityY(_playerData.ClimbSpeed * _yInput);
-        if (_yInput == 0)
-        {
+        if (yInput == 0)
             _player.PlayerAnimator.speed = 0;
-        }
         else
-        {
             _player.PlayerAnimator.speed = 1;
-        }
-    }
 
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
     }
 }
 

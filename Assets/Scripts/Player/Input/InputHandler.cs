@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    public event Action OnJumpStarted;
     //private void Update()
     //{
     //    CheckJumpTime();
@@ -29,7 +30,6 @@ public class InputHandler : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-
         if (context.started)
         {
             CountOfJump++;
@@ -37,7 +37,6 @@ public class InputHandler : MonoBehaviour
             JumpIsStarted = true;
             _startJump = Time.time;
         }
-
     }
 
     //private void CheckJumpTime()

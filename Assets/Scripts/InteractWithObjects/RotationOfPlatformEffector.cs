@@ -32,10 +32,4 @@ public class RotationOfPlatformEffector : MonoBehaviour
         yield return new WaitForSeconds(1f);
         _platformEffector.rotationalOffset = 0;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
