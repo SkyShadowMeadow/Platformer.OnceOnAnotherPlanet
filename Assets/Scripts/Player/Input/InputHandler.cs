@@ -7,11 +7,6 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     public event Action OnJumpStarted;
-    //private void Update()
-    //{
-    //    CheckJumpTime();
-    //}
-    //[SerializeField] private float _secondsWhileJumpTrue = 5f;
     private float _startJump;
     public Vector2 RawMoveInput { get; private set; }
     public int NormalizedMoveInputX { get; private set; } 
@@ -39,13 +34,6 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    //private void CheckJumpTime()
-    //{
-    //    if (Time.time >= _startJump + _secondsWhileJumpTrue)
-    //    {
-    //        UseJump();
-    //    }
-    //}
 
     public void UseJump() => JumpIsStarted = false;
 

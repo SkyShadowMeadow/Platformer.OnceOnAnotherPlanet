@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Golem : MonoBehaviour
+public class Golem : Enemy
 {
     public event Action<int> OnMovedChanged;
 
     [SerializeField] private Transform[] _pointsToPatrol;
-    [SerializeField] private float _damage = 1f;
+    [SerializeField] private float _damage = 3f;
 
-    public float GetDamage() => _damage;
+    public override float GetDamage() => _damage;
     public Transform[] GetPointsToPatrol() => _pointsToPatrol;
 
     private GolemStateMachine _golemStateMachine;

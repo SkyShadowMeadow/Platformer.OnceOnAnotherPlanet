@@ -33,7 +33,6 @@ public class MovingState : IState
     public void Tick()
     {
         _player.SetVelocityX(_playerData.MovenmentSpeed * _inputHandler.NormalizedMoveInputX);
-        //_player.SetVelocityY(0);
         _player.IfShouldFlip(_inputHandler.NormalizedMoveInputX);
     }
 }

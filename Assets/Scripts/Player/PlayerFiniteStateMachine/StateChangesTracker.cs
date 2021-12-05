@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StateChangesTracker : MonoBehaviour
 {
+    [SerializeField] private PlayerHealthController _playerHealthController;
     private Player _player;
     private InputHandler _inputHandler;
 
@@ -16,6 +17,7 @@ public class StateChangesTracker : MonoBehaviour
     private bool _isOnThePlatform;
     private float _yInput;
     private float _realYInput;
+    private bool _isDead;
 
     private void Awake()
     {
@@ -34,7 +36,15 @@ public class StateChangesTracker : MonoBehaviour
     private void OnEnable()
     {
         _inputHandler.OnJumpStarted += () => _jumpIsStarted = true;
+        _playerHealthController.playerIsDead += MarkAsDead;
     }
+  
+    private void OnDisable()
+    {
+        _playerHealthController.playerIsDead -= MarkAsDead;
+    }
+    private void MarkAsDead() => _isDead = true;
+
     public void DecreaseAmountOfJumps() => _amountOfJumps--;
     public void RestoreAmountOfJumps() => _amountOfJumps = 1;
     public void ChangeAnimationTrigger(bool changed) => _isAnimationFinished = changed;
@@ -48,6 +58,7 @@ public class StateChangesTracker : MonoBehaviour
     public bool HasStartedToMove() => _inputHandler.NormalizedMoveInputX != 0;
     public bool HasStoppedMoving() => _inputHandler.NormalizedMoveInputX == 0; 
     public bool HasEnoughJumps() => _amountOfJumps > 0;
+    public bool HasDied() => _isDead;
 
     public bool CanClimb() 
     {

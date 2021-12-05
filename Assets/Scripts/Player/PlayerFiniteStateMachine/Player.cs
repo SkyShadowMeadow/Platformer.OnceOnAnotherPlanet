@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
     #region States
     public IdlingState IdlingState { get; private set; }
+    public DeathState DeathState { get; private set; }
     public MovingState MovingState { get; private set; }
     public JumpState JumpState { get; private set; }
     //public InAirState InAirState { get; private set; }
@@ -44,13 +45,14 @@ public class Player : MonoBehaviour
         PlayerStateMachine = new PlayerStateMachine();
 
         IdlingState = new IdlingState(this, PlayerAnimator);
+        DeathState = new DeathState(this, PlayerAnimator);
         MovingState = new MovingState(this, _playerData, PlayerAnimator, InputHandler);
         JumpState = new JumpState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
-        //InAirState = new InAirState(this, PlayerStateMachine, _playerData, "InTheAir");
         LandedState = new LandedState(PlayerAnimator, _stateChangesTracker);
         ClimbingState = new ClimbingState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
 
         At(IdlingState, MovingState, HasStartedToMove());
+        At(IdlingState, DeathState, HasDied());
         At(MovingState, IdlingState, HasStoppedMoving());
         At(IdlingState, JumpState, CanJump());
         At(MovingState, JumpState, CanJump());
@@ -67,6 +69,7 @@ public class Player : MonoBehaviour
         void At(IState to, IState from, Func<bool> condition) => PlayerStateMachine.AddTransition(to, from, condition);
 
         Func<bool> HasStartedToMove() => () => _stateChangesTracker.HasStartedToMove();
+        Func<bool> HasDied() => () => _stateChangesTracker.HasDied();
         Func<bool> HasStoppedMoving() => () => _stateChangesTracker.HasStoppedMoving();
         Func<bool> CanJump() => () => InputHandler.JumpIsStarted && _stateChangesTracker.HasEnoughJumps();
         Func<bool> HasLanded() => () => _stateChangesTracker.HasLanded();
@@ -77,6 +80,7 @@ public class Player : MonoBehaviour
         Func<bool> HasReachedTheGround() => () => _stateChangesTracker.HasReachedClimbDestination();
     }
     private void FixedUpdate() => PlayerStateMachine.Tick();
+
 
     public void SetVelocityX(float velocity)
     {

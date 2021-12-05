@@ -5,14 +5,15 @@ using UnityEngine.Events;
 
 public class HitEvent : MonoBehaviour
 {
-    private Golem _golem;
+    private Enemy _enemy;
     private float damage;
-    public FloatEvent OnHitEvent;
+    public static event UnityAction<float> OnHitEvent;
 
     private void Awake()
     {
-        _golem = GetComponentInParent<Golem>();
-        damage = _golem.GetDamage();
+        _enemy = GetComponentInParent<Enemy>();
+        damage = _enemy.GetDamage();
+        Debug.Log("WhatTheDamage:" + damage);
     }
     public void OnHit()
     {

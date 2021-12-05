@@ -17,7 +17,9 @@ public class PlayerHealthView : MonoBehaviour
         _rectTransform = GetComponent<RectTransform>();
         _offset = _fullHeart.GetComponent<RectTransform>().sizeDelta.x;
     }
-
+    private void OnEnable()
+    {
+    }
     void Start()
     {
         images = new List<Image>();
