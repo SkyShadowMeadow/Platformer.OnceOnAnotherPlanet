@@ -8,7 +8,6 @@ public class LandedState : IState
     private readonly Animator _animator;
 
     private static readonly int IsLanding = Animator.StringToHash("IsLanding");
-    private bool _isAnimationFinished;
 
     public LandedState(Animator animator, StateChangesTracker stateChangesTracker)
     {
@@ -25,10 +24,12 @@ public class LandedState : IState
 
     public void Tick()
     {
+
     }
     public void OnExit()
     {
         _animator.SetBool(IsLanding, false);
+        _animator.SetFloat("yVelocity", 0);
     }
 
 }

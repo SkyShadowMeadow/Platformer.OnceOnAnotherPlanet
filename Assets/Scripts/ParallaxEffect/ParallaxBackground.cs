@@ -23,7 +23,7 @@ public class ParallaxBackground : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform BigLayer = transform.GetChild(i);
-            for (int j = 0; j < transform.childCount; j++)
+            for (int j = 0; j < BigLayer.childCount; j++)
             {
                 ParallaxLayer layer = BigLayer.GetChild(j).GetComponent<ParallaxLayer>();
                 if (layer != null)

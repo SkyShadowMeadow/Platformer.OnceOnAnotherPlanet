@@ -25,7 +25,6 @@ public class GolemStateMachine
 
     public void SetState(IState state)
     {
-        Debug.Log(_currentState);
         if (state == _currentState)
             return;
 

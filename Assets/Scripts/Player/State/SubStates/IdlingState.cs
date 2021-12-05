@@ -17,6 +17,8 @@ public class IdlingState : IState
     public void OnEnter()
     {
         _animator.SetBool(IsIdling, true);
+        _player.SetVelocityX(0);
+
     }
 
     public void OnExit()

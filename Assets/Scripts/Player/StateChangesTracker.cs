@@ -40,21 +40,18 @@ public class StateChangesTracker : MonoBehaviour
     public void ChangeAnimationTrigger(bool changed) => _isAnimationFinished = changed;
 
     public bool GetAnimationStatus() => _isAnimationFinished;
-    public bool HasFinishedTheJump() => (_player.IsOnTheGround() || _player.IsOnThePlatform()) && _inputHandler.NormalizedMoveInputX == 0;
-    public bool HasLanded() => _isAnimationFinished && (_player.IsOnTheGround() || _player.IsOnThePlatform()) && _inputHandler.NormalizedMoveInputX == 0;
+    public bool HasFinishedTheJump() => (_player.IsOnTheGround() || _player.IsOnThePlatform()) && Mathf.Abs(_inputHandler.NormalizedMoveInputX) <= 0.01f;
+    public bool HasLanded() => _isAnimationFinished && (_player.IsOnTheGround() || _player.IsOnThePlatform()) && Mathf.Abs(_inputHandler.NormalizedMoveInputX) <= 0.01f;
+    public bool HasLandedAndStartedToMove() => _isAnimationFinished && (_player.IsOnTheGround() || _player.IsOnThePlatform()) && _inputHandler.NormalizedMoveInputX != 0;
     public bool HasMovedRightAfterJump() => (_player.IsOnTheGround() || _player.IsOnThePlatform()) && _inputHandler.NormalizedMoveInputX != 0;
 
     public bool HasStartedToMove() => _inputHandler.NormalizedMoveInputX != 0;
-    public bool HasStoppedMoving() => _inputHandler.NormalizedMoveInputX == 0;
+    public bool HasStoppedMoving() => _inputHandler.NormalizedMoveInputX == 0; 
     public bool HasEnoughJumps() => _amountOfJumps > 0;
 
     public bool CanClimb() 
     {
         if (_player.IsOnTheGround() && _player.IsOnTheStairs() && _inputHandler.RealMoveInputY > 0)
-        {
-            return true;
-        }
-        else if (_player.IsOnThePlatform() && _player.IsOnTheStairs() && _inputHandler.RealMoveInputY > 0)
         {
             return true;
         }

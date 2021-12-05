@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
         At(MovingState, JumpState, CanJump());
         At(JumpState, LandedState, HasFinishedTheJump());
         At(LandedState, IdlingState, HasLanded());
+        At(LandedState, MovingState, HasStartedToMove());
 
         At(JumpState, MovingState, HasMovedRightAfterJump());
         At(IdlingState, ClimbingState, CanClimb());
@@ -69,12 +70,13 @@ public class Player : MonoBehaviour
         Func<bool> HasStoppedMoving() => () => _stateChangesTracker.HasStoppedMoving();
         Func<bool> CanJump() => () => InputHandler.JumpIsStarted && _stateChangesTracker.HasEnoughJumps();
         Func<bool> HasLanded() => () => _stateChangesTracker.HasLanded();
+        Func<bool> HasLandedAndStartedToMove() => () => _stateChangesTracker.HasLandedAndStartedToMove();
         Func<bool> HasFinishedTheJump() => () => _stateChangesTracker.HasFinishedTheJump();
         Func<bool> HasMovedRightAfterJump() => () => _stateChangesTracker.HasMovedRightAfterJump();
         Func<bool> CanClimb() => () => _stateChangesTracker.CanClimb();
         Func<bool> HasReachedTheGround() => () => _stateChangesTracker.HasReachedClimbDestination();
     }
-    private void Update() => PlayerStateMachine.Tick();
+    private void FixedUpdate() => PlayerStateMachine.Tick();
 
     public void SetVelocityX(float velocity)
     {

@@ -44,6 +44,7 @@ public class JumpState : IState
     public void OnExit()
     {
         _animator.SetBool(IsInTheAir, false);
+        _animator.SetFloat("yVelocity", 0);
         _stateChangesTracker.RestoreAmountOfJumps();
         _inputHandler.JumpIsStarted = false;
     }
