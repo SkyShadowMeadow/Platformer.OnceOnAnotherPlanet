@@ -7,7 +7,6 @@ public class PlayerHealthController : MonoBehaviour
 {
     public event UnityAction playerIsDead;
 
-    //[SerializeField] private PlayerHealthLogic _healthLogic;
     [SerializeField] private PlayerHealthView _healthView;
     [SerializeField] private PlayerData _playerData;
     private float _currentHealthPoints;
