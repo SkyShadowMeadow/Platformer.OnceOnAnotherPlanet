@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrePickup : MonoBehaviour
+public class Ore : MonoBehaviour
 {
     [SerializeField] private GameObject _vfxOnTakeParticles;
+    [SerializeField] private Inventory _inventory;
+
     private float lifetime = 0.7f;
     private ParticleSystem _onTakenParticles;
     private AudioSource _onTakenSound;
@@ -19,10 +21,10 @@ public class OrePickup : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == Player.PLAYER_TAG)
         {
             PlayTakenRoutine();
-            collision.GetComponent<PlayerPickupTreatement>().AddPickup();
+            _inventory.TakeOre();
         }
     }
 private void PlayTakenRoutine()
@@ -31,6 +33,6 @@ private void PlayTakenRoutine()
         _onTakenParticles.Play();
         _onTakenSound.Play();
 
-    Destroy(gameObject, lifetime);
+        Destroy(gameObject, lifetime);
     }
 }

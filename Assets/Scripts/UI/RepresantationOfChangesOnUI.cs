@@ -6,16 +6,16 @@ using UnityEngine;
 
 public class RepresantationOfChangesOnUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _textMeshPro;
-    [SerializeField] private  PlayerPickupTreatement _playerPickupTreatement;
+    [SerializeField] private TextMeshProUGUI _howManyOres;
+    [SerializeField] private  Inventory _playerInventory;
 
     private void OnEnable()
     {
-        _playerPickupTreatement.OnChangePickupCount += GetNumberOfOresOnUI;
+        _playerInventory.OnOreTaken += GetNumberOfOresOnUI;
     }
     private void OnDisable()
     {
-        _playerPickupTreatement.OnChangePickupCount -= GetNumberOfOresOnUI;
+        _playerInventory.OnOreTaken -= GetNumberOfOresOnUI;
     }
     void Start()
     {
@@ -23,7 +23,7 @@ public class RepresantationOfChangesOnUI : MonoBehaviour
     }
     public void GetNumberOfOresOnUI()
     {
-        _textMeshPro.text = _playerPickupTreatement.GetPickup().ToString();
+        _howManyOres.text = _playerInventory.GetOres().ToString();
     }
 
 }

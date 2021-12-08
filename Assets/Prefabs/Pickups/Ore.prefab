@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vfxOnTakeParticles: {fileID: 688310358797694070}
+  _inventory: {fileID: 0}
 --- !u!1 &688310358362637131
 GameObject:
   m_ObjectHideFlags: 0

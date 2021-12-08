@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public const string PLAYER_TAG = "Player";
+
     public static event OnThroughtPlatform OnIdleState;
     public delegate void OnThroughtPlatform();
     private StateChangesTracker _stateChangesTracker;
@@ -14,6 +16,7 @@ public class Player : MonoBehaviour
     public Animator PlayerAnimator { get; private set; }
     public Rigidbody2D MyRigidbody2D { get; private set; }
     public InputHandler InputHandler { get; private set; }
+    [SerializeField] private Inventory _inventory;
     #endregion
 
     #region States
@@ -81,7 +84,14 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate() => PlayerStateMachine.Tick();
 
-
+    private void OnEnable()
+    {
+        _inventory.OnWeaponTaken += ShowWeapon;
+    }
+    private void OnDisable()
+    {
+        _inventory.OnWeaponTaken -= ShowWeapon;
+    }
     public void SetVelocityX(float velocity)
     {
         _workspace.Set(velocity, GetCurrentVelocity().y);
@@ -122,7 +132,11 @@ public class Player : MonoBehaviour
         CurrentFlipDirection *= -1;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
-
+    private void ShowWeapon() 
+    {
+        Weapon weapon = GetComponentInChildren<Weapon>();
+        weapon.gameObject.SetActive(true);
+    }
     public void RestoreGravity()
     {
         MyRigidbody2D.gravityScale = NormalGravityScale;
