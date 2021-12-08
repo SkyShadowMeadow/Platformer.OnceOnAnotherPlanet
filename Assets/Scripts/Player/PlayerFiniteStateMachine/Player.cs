@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D MyRigidbody2D { get; private set; }
     public InputHandler InputHandler { get; private set; }
     [SerializeField] private Inventory _inventory;
+    [SerializeField] GameObject _weapon;
     #endregion
 
     #region States
@@ -134,8 +135,7 @@ public class Player : MonoBehaviour
     }
     private void ShowWeapon() 
     {
-        Weapon weapon = GetComponentInChildren<Weapon>();
-        weapon.gameObject.SetActive(true);
+        _weapon.SetActive(true);
     }
     public void RestoreGravity()
     {
