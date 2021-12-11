@@ -15,22 +15,31 @@ public class InputHandler : MonoBehaviour
     public bool JumpIsStarted { get; set; }
     public int CountOfJump { get; set; }
 
-    public void OnMove(InputAction.CallbackContext context)
+    public void OnMove(InputValue value)
     {
-
-       RawMoveInput = context.ReadValue<Vector2>();
+       RawMoveInput = value.Get<Vector2>();
        RealMoveInputY = (int)(RawMoveInput.y * Vector2.up).y;
        NormalizedMoveInputX = (int)(RawMoveInput.x * Vector2.right).normalized.x;
        NormalizedMoveInputY = (int)(RawMoveInput.y * Vector2.up).normalized.y;
     }
-    public void OnJump(InputAction.CallbackContext context)
+    public void OnJump(InputValue value)
     {
-        if (context.started)
+        if (value.isPressed)
         {
             CountOfJump++;
             Debug.Log("Jumps " + CountOfJump);
             JumpIsStarted = true;
             _startJump = Time.time;
+        }
+    }
+    public void OnAttack(InputValue value)
+    {
+        Debug.Log("Attack" + CountOfJump);
+
+        if (value.isPressed)
+        {
+            //CountOfJump++;
+            Debug.Log("Attack " + CountOfJump);
         }
     }
 
