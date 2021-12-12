@@ -7,73 +7,67 @@ public class Player : MonoBehaviour
 {
     public const string PLAYER_TAG = "Player";
 
-    public static event OnThroughtPlatform OnIdleState;
+    public static event OnThroughtPlatform OnClimbDown;
     public delegate void OnThroughtPlatform();
-    private StateChangesTracker _stateChangesTracker;
-    #region Components
-    [SerializeField] private PlayerData _playerData;
-    public PlayerStateMachine PlayerStateMachine { get; private set; }
-    public Animator PlayerAnimator { get; private set; }
-    public Rigidbody2D MyRigidbody2D { get; private set; }
-    public InputHandler InputHandler { get; private set; }
+
     [SerializeField] private Inventory _inventory;
     [SerializeField] GameObject _weapon;
-    #endregion
-
-    #region States
-    public IdlingState IdlingState { get; private set; }
-    public DeathState DeathState { get; private set; }
-    public MovingState MovingState { get; private set; }
-    public JumpState JumpState { get; private set; }
-    //public InAirState InAirState { get; private set; }
-    public LandedState LandedState { get; private set; }
-    public ClimbingState ClimbingState { get; private set; }
-    public PlayerAttackState PlayerAttackState { get; private set; }
-    public float NormalGravityScale { get; private set; }
-
-    #endregion
-    private Vector2 _workspace;
-
-    public int CurrentFlipDirection { get; private set; }
-
+    [SerializeField] private PlayerData _playerData;
     [SerializeField] private Transform _checkGroundPoint;
     [SerializeField] private Transform _checkStairPoint;
 
+    private StateChangesTracker _stateChangesTracker;
+    private Animator _playerAnimator;
+    private Rigidbody2D _myRigidbody2D;
+    private InputHandler _inputHandler;
+
+    public PlayerStateMachine PlayerStateMachine { get; private set; }
+    public float NormalGravityScale { get; private set; }
+    public int CurrentFlipDirection { get; private set; }
+
+    private Vector2 _workspace;
+
     private void Awake()
     {
-        MyRigidbody2D = GetComponent<Rigidbody2D>();
-        PlayerAnimator = GetComponentInChildren<Animator>();
-        InputHandler = GetComponent<InputHandler>();
-        CurrentFlipDirection = 1;
-        NormalGravityScale = MyRigidbody2D.gravityScale;
+        _myRigidbody2D = GetComponent<Rigidbody2D>();
+        _playerAnimator = GetComponentInChildren<Animator>();
+        _inputHandler = GetComponent<InputHandler>();
         _stateChangesTracker = GetComponent<StateChangesTracker>();
+
+        CurrentFlipDirection = 1;
+        NormalGravityScale = _myRigidbody2D.gravityScale;
+
         PlayerStateMachine = new PlayerStateMachine();
 
-        IdlingState = new IdlingState(this, PlayerAnimator);
-        DeathState = new DeathState(this, PlayerAnimator);
-        MovingState = new MovingState(this, _playerData, PlayerAnimator, InputHandler);
-        JumpState = new JumpState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
-        LandedState = new LandedState(PlayerAnimator, _stateChangesTracker);
-        ClimbingState = new ClimbingState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
-        PlayerAttackState = new PlayerAttackState(this, PlayerAnimator, InputHandler, _stateChangesTracker);
+        var IdlingState = new IdlingState(this, _playerAnimator);
+        var DeathState = new DeathState(this, _playerAnimator);
+        var MovingState = new MovingState(this, _playerData, _playerAnimator, _inputHandler);
+        var JumpState = new JumpState(this, _playerData, _playerAnimator, _inputHandler, _stateChangesTracker);
+        var LandedState = new LandedState(_playerAnimator, _stateChangesTracker);
+        var ClimbingState = new ClimbingState(this, _playerData, _playerAnimator, _inputHandler, _stateChangesTracker);
+        var PlayerAttackState = new PlayerAttackState(this, _playerAnimator, _inputHandler, _stateChangesTracker);
 
         At(IdlingState, MovingState, HasStartedToMove());
-        At(IdlingState, DeathState, HasDied());
-        At(MovingState, IdlingState, HasStoppedMoving());
         At(IdlingState, JumpState, CanJump());
-        At(MovingState, JumpState, CanJump());
-        At(JumpState, LandedState, HasFinishedTheJump());
-        At(LandedState, IdlingState, HasLanded());
-        At(LandedState, MovingState, HasStartedToMove());
-
-        At(JumpState, MovingState, HasMovedRightAfterJump());
         At(IdlingState, ClimbingState, CanClimb());
         At(IdlingState, PlayerAttackState, CanAttack());
+        At(IdlingState, DeathState, HasDied());
+
+        At(MovingState, IdlingState, HasStoppedMoving());
+        At(MovingState, JumpState, CanJump());
         At(MovingState, PlayerAttackState, CanAttack());
+        At(MovingState, DeathState, HasDied());
+
+        At(JumpState, LandedState, HasFinishedTheJump());
+        At(JumpState, MovingState, HasMovedRightAfterJump());
+
+        At(LandedState, IdlingState, HasLanded());
+        At(LandedState, MovingState, HasStartedToMove());
+      
         At(PlayerAttackState, IdlingState, AttackIsFinished());
         At(PlayerAttackState, MovingState, AttackIsFinishedAndMove());
         At(PlayerAttackState, DeathState, HasDied());
-        At(MovingState, DeathState, HasDied());
+   
         At(ClimbingState, IdlingState, HasReachedTheGround());
 
         PlayerStateMachine.SetState(IdlingState);
@@ -81,18 +75,18 @@ public class Player : MonoBehaviour
         void At(IState to, IState from, Func<bool> condition) => PlayerStateMachine.AddTransition(to, from, condition);
 
         Func<bool> HasStartedToMove() => () => _stateChangesTracker.HasStartedToMove();
-        Func<bool> HasDied() => () => _stateChangesTracker.HasBeenDying();
         Func<bool> HasStoppedMoving() => () => _stateChangesTracker.HasStoppedMoving();
-        Func<bool> CanJump() => () => InputHandler.JumpIsStarted && _stateChangesTracker.HasEnoughJumps();
-        Func<bool> CanAttack() => () => InputHandler.AttackIsStarted;
-        Func<bool> AttackIsFinished() => () => !InputHandler.AttackIsStarted && !_stateChangesTracker.HasStartedToMove();
-        Func<bool> AttackIsFinishedAndMove() => () => !InputHandler.AttackIsStarted && _stateChangesTracker.HasStartedToMove();
-        Func<bool> HasLanded() => () => _stateChangesTracker.HasLanded();
-        Func<bool> HasLandedAndStartedToMove() => () => _stateChangesTracker.HasLandedAndStartedToMove();
+        Func<bool> CanJump() => () => _inputHandler.JumpIsStarted && _stateChangesTracker.HasEnoughJumps();
+        Func<bool> HasReachedTheGround() => () => _stateChangesTracker.HasReachedClimbDestination();
         Func<bool> HasFinishedTheJump() => () => _stateChangesTracker.HasFinishedTheJump();
         Func<bool> HasMovedRightAfterJump() => () => _stateChangesTracker.HasMovedRightAfterJump();
+        Func<bool> HasLanded() => () => _stateChangesTracker.HasLanded();
+        Func<bool> CanAttack() => () => _inputHandler.AttackIsStarted;
+        Func<bool> AttackIsFinished() => () => !_inputHandler.AttackIsStarted && !_stateChangesTracker.HasStartedToMove();
+        Func<bool> AttackIsFinishedAndMove() => () => !_inputHandler.AttackIsStarted && _stateChangesTracker.HasStartedToMove();
         Func<bool> CanClimb() => () => _stateChangesTracker.CanClimb();
-        Func<bool> HasReachedTheGround() => () => _stateChangesTracker.HasReachedClimbDestination();
+        Func<bool> HasDied() => () => _stateChangesTracker.HasBeenDying();
+   
     }
     private void FixedUpdate() => PlayerStateMachine.Tick();
 
@@ -107,14 +101,14 @@ public class Player : MonoBehaviour
     public void SetVelocityX(float velocity)
     {
         _workspace.Set(velocity, GetCurrentVelocity().y);
-        MyRigidbody2D.velocity = _workspace;
+        _myRigidbody2D.velocity = _workspace;
     }
     public void SetVelocityY(float velocity)
     {
         _workspace.Set(GetCurrentVelocity().x, velocity);
-        MyRigidbody2D.velocity = _workspace;
+        _myRigidbody2D.velocity = _workspace;
     }
-    public Vector2 GetCurrentVelocity() => MyRigidbody2D.velocity;
+    public Vector2 GetCurrentVelocity() => _myRigidbody2D.velocity;
 
     public bool IsOnTheGround()
     {
@@ -132,7 +126,7 @@ public class Player : MonoBehaviour
     }
     public void StartEventClimbDown()
     {
-        OnIdleState();
+        OnClimbDown();
     }
     public void IfShouldFlip(int xInput)
     {
@@ -148,8 +142,7 @@ public class Player : MonoBehaviour
     {
         _weapon.SetActive(true);
     }
-    public void RestoreGravity()
-    {
-        MyRigidbody2D.gravityScale = NormalGravityScale;
-    }
+    public void CancelGravity() => _myRigidbody2D.gravityScale = 0;
+    public void RestoreGravity() => _myRigidbody2D.gravityScale = NormalGravityScale;
+
 }

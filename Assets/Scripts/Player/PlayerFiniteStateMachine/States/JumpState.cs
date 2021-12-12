@@ -36,8 +36,8 @@ public class JumpState : IState
     {
         _player.IfShouldFlip(_inputHandler.NormalizedMoveInputX);
         _player.SetVelocityX(_inputHandler.NormalizedMoveInputX * _playerData.MovenmentSpeed);
-        _player.PlayerAnimator.SetFloat("yVelocity", _player.GetCurrentVelocity().y);
-        _player.PlayerAnimator.SetFloat("xVelocity", Mathf.Abs(_player.GetCurrentVelocity().x));
+        _animator.SetFloat("yVelocity", _player.GetCurrentVelocity().y);
+        _animator.SetFloat("xVelocity", Mathf.Abs(_player.GetCurrentVelocity().x));
     }
 
     public void OnExit()

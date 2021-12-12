@@ -4,7 +4,7 @@ public class PursueState : IState
 {
     private const float RUN_SPEED = 6F;
 
-    private readonly Golem _golem;
+    private Golem _golem;
     private readonly PlayerDetector _playerDetector;
     private readonly Animator _animator;
     private static readonly int IsRunning = Animator.StringToHash("IsRunning");
@@ -28,6 +28,9 @@ public class PursueState : IState
     {
         _rigidbody2D = _golem.GetComponent<Rigidbody2D>();
         _animator.SetBool(IsRunning, true);
+        var playerPosition = _playerDetector.GetNearestPlayerPosition();
+        _golem.IfShouldFlip(playerPosition.x);
+
     }
 
     public void OnExit()

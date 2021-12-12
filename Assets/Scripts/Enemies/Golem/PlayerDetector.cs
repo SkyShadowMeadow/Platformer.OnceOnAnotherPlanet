@@ -5,10 +5,14 @@ using UnityEngine;
 public class PlayerDetector : MonoBehaviour
 {
     private bool _enemyInRange;
-
+    private int _layerMask;
     private Player _detectedPlayer;
     GameObject _player;
-
+    
+    private void Start()
+    {
+        _layerMask = LayerMask.GetMask("Player");
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.GetComponent<Player>())
@@ -37,4 +41,5 @@ public class PlayerDetector : MonoBehaviour
         }
         else return Vector2.zero;
     }
+
 }

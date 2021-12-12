@@ -30,6 +30,7 @@ public class MoveToThePoint : IState
         _pointsToPatrol = _golem.GetPointsToPatrol();   
         nearestPoint = FindNearestPatrolPoint();
         _animator.SetBool(IsPatroling, true);
+        _golem.IfShouldFlip(nearestPoint.position.x);
     }
     public void Tick()
     {
@@ -37,10 +38,7 @@ public class MoveToThePoint : IState
         {
             Move();
         }
-        else
-        {
 
-        }
     }
     private Transform FindNearestPatrolPoint()
     {
@@ -68,9 +66,13 @@ public class MoveToThePoint : IState
         }
         else return false;
     }
-    void Move()
+    private void Move()
     {
         _golem.transform.position = Vector2.MoveTowards(_golem.transform.position, nearestPoint.position, MOVE_SPEED * Time.deltaTime);
+    }
+    public float SetFlipDirection()
+    {
+        return nearestPoint.position.x;
     }
     public void OnExit()
     {

@@ -22,5 +22,7 @@ public class DeathState : IState
 
     public void Tick()
     {
+        //if (_stateChangesTracker.DeathAnimationIsFinished())
+        //    OnExit();
     }
 }

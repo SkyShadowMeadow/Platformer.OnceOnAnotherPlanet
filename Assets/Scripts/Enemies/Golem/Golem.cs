@@ -14,6 +14,8 @@ public class Golem : Enemy
     public Transform[] GetPointsToPatrol() => _pointsToPatrol;
 
     private GolemStateMachine _golemStateMachine;
+    private float _currentFlipDirection = 0;
+    private bool _isFacingLeft = true;
 
     private void Awake()
     {
@@ -52,5 +54,26 @@ public class Golem : Enemy
     }
 
     private void Update() => _golemStateMachine.Tick();
-    
+
+    public void IfShouldFlip(float targetXDirection)
+    {
+        if (targetXDirection < transform.position.x && !_isFacingLeft)
+        {
+            FlipOnLeftDirection();
+        }
+        else if (targetXDirection > transform.position.x && _isFacingLeft)
+        {
+            FlipOnRightDirection();
+        }
+    }
+    private void FlipOnLeftDirection()
+    {
+        transform.localScale = new Vector3(1f, 1f, 1f);
+        _isFacingLeft = true;
+    }
+    private void FlipOnRightDirection()
+    {
+        transform.localScale = new Vector3(-1f, 1f, 1f);
+        _isFacingLeft = false;
+    }
 }

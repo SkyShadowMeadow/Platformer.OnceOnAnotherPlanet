@@ -25,13 +25,13 @@ public class ClimbingState : IState
     public void OnEnter()
     {
         _animator.SetBool(IsClimbing, true);
-        _player.MyRigidbody2D.gravityScale = 0;
+        _player.CancelGravity();
     }
 
     public void OnExit()
     {
         _player.RestoreGravity();
-        _player.PlayerAnimator.speed = 1;
+        _animator.speed = 1;
         _animator.SetBool(IsClimbing, false);
     }
 
@@ -41,9 +41,9 @@ public class ClimbingState : IState
         _player.SetVelocityY(_playerData.ClimbSpeed * yInput);
 
         if (yInput == 0)
-            _player.PlayerAnimator.speed = 0;
+            _animator.speed = 0;
         else
-            _player.PlayerAnimator.speed = 1;
+            _animator.speed = 1;
 
     }
 }

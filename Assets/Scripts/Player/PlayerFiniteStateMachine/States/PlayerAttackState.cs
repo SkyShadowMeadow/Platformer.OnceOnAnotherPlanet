@@ -29,7 +29,6 @@ public class PlayerAttackState : IState
 
     public void Tick()
     {
-        if (_stateChangesTracker.DeathAnimationIsFinished()) 
-            OnExit();
+
     }
 }

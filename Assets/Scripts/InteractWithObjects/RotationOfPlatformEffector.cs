@@ -5,20 +5,17 @@ using UnityEngine;
 public class RotationOfPlatformEffector : MonoBehaviour
 {
     private PlatformEffector2D _platformEffector;
-    private Player _player;
     void Start()
     {
-        _platformEffector = GetComponent<PlatformEffector2D>();
-        _player = FindObjectOfType<Player>();
-        
+        _platformEffector = GetComponent<PlatformEffector2D>();        
     }
     private void OnEnable()
     {
-        Player.OnIdleState += RotatePlatformEffector;
+        Player.OnClimbDown += RotatePlatformEffector;
     }
     private void OnDisable()
     {
-        Player.OnIdleState -= RotatePlatformEffector;
+        Player.OnClimbDown -= RotatePlatformEffector;
     }
 
     private void RotatePlatformEffector()
