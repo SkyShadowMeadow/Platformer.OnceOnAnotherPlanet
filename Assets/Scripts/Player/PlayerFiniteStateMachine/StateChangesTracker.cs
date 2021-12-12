@@ -17,7 +17,7 @@ public class StateChangesTracker : MonoBehaviour
     private bool _isOnThePlatform;
     private float _yInput;
     private float _realYInput;
-    private bool _isDead;
+    private bool _isDying;
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class StateChangesTracker : MonoBehaviour
     {
         _playerHealthController.playerIsDead -= MarkAsDead;
     }
-    private void MarkAsDead() => _isDead = true;
+    private void MarkAsDead() => _isDying = true;
 
     public void DecreaseAmountOfJumps() => _amountOfJumps--;
     public void RestoreAmountOfJumps() => _amountOfJumps = 1;
@@ -58,7 +58,8 @@ public class StateChangesTracker : MonoBehaviour
     public bool HasStartedToMove() => _inputHandler.NormalizedMoveInputX != 0;
     public bool HasStoppedMoving() => _inputHandler.NormalizedMoveInputX == 0; 
     public bool HasEnoughJumps() => _amountOfJumps > 0;
-    public bool HasDied() => _isDead;
+    public bool HasBeenDying() => _isDying;
+    public bool DeathAnimationIsFinished() => _isAnimationFinished;
 
     public bool CanClimb() 
     {

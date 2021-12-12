@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerHelper : MonoBehaviour
 {
-    protected Player _playerParent;
-    protected StateChangesTracker _stateChandesTracker;
+    private Player _playerParent;
+    private StateChangesTracker _stateChandesTracker;
     private void Start()
     {
         _playerParent = GetComponentInParent<Player>();

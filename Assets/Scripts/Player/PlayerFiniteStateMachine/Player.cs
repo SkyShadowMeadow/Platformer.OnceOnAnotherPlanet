@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     //public InAirState InAirState { get; private set; }
     public LandedState LandedState { get; private set; }
     public ClimbingState ClimbingState { get; private set; }
+    public PlayerAttackState PlayerAttackState { get; private set; }
     public float NormalGravityScale { get; private set; }
 
     #endregion
@@ -54,6 +55,7 @@ public class Player : MonoBehaviour
         JumpState = new JumpState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
         LandedState = new LandedState(PlayerAnimator, _stateChangesTracker);
         ClimbingState = new ClimbingState(this, _playerData, PlayerAnimator, InputHandler, _stateChangesTracker);
+        PlayerAttackState = new PlayerAttackState(this, PlayerAnimator, InputHandler, _stateChangesTracker);
 
         At(IdlingState, MovingState, HasStartedToMove());
         At(IdlingState, DeathState, HasDied());
@@ -66,6 +68,12 @@ public class Player : MonoBehaviour
 
         At(JumpState, MovingState, HasMovedRightAfterJump());
         At(IdlingState, ClimbingState, CanClimb());
+        At(IdlingState, PlayerAttackState, CanAttack());
+        At(MovingState, PlayerAttackState, CanAttack());
+        At(PlayerAttackState, IdlingState, AttackIsFinished());
+        At(PlayerAttackState, MovingState, AttackIsFinishedAndMove());
+        At(PlayerAttackState, DeathState, HasDied());
+        At(MovingState, DeathState, HasDied());
         At(ClimbingState, IdlingState, HasReachedTheGround());
 
         PlayerStateMachine.SetState(IdlingState);
@@ -73,9 +81,12 @@ public class Player : MonoBehaviour
         void At(IState to, IState from, Func<bool> condition) => PlayerStateMachine.AddTransition(to, from, condition);
 
         Func<bool> HasStartedToMove() => () => _stateChangesTracker.HasStartedToMove();
-        Func<bool> HasDied() => () => _stateChangesTracker.HasDied();
+        Func<bool> HasDied() => () => _stateChangesTracker.HasBeenDying();
         Func<bool> HasStoppedMoving() => () => _stateChangesTracker.HasStoppedMoving();
         Func<bool> CanJump() => () => InputHandler.JumpIsStarted && _stateChangesTracker.HasEnoughJumps();
+        Func<bool> CanAttack() => () => InputHandler.AttackIsStarted;
+        Func<bool> AttackIsFinished() => () => !InputHandler.AttackIsStarted && !_stateChangesTracker.HasStartedToMove();
+        Func<bool> AttackIsFinishedAndMove() => () => !InputHandler.AttackIsStarted && _stateChangesTracker.HasStartedToMove();
         Func<bool> HasLanded() => () => _stateChangesTracker.HasLanded();
         Func<bool> HasLandedAndStartedToMove() => () => _stateChangesTracker.HasLandedAndStartedToMove();
         Func<bool> HasFinishedTheJump() => () => _stateChangesTracker.HasFinishedTheJump();
