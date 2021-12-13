@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class WeaponPickup : MonoBehaviour
 {
     [SerializeField] private GameObject _vfxOnTakeParticles;
     [SerializeField] private Inventory _inventory;

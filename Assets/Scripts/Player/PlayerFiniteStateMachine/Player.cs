@@ -15,15 +15,19 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private Transform _checkGroundPoint;
     [SerializeField] private Transform _checkStairPoint;
+    [SerializeField] private Transform _checkAttackPoint;
+    [SerializeField] private int _damage = 3;
 
     private StateChangesTracker _stateChangesTracker;
     private Animator _playerAnimator;
     private Rigidbody2D _myRigidbody2D;
     private InputHandler _inputHandler;
+    private PlayerHelper _playerHelper;
 
     public PlayerStateMachine PlayerStateMachine { get; private set; }
     public float NormalGravityScale { get; private set; }
     public int CurrentFlipDirection { get; private set; }
+    public bool EnemyIsHit { get; private set; }
 
     private Vector2 _workspace;
 
@@ -33,6 +37,7 @@ public class Player : MonoBehaviour
         _playerAnimator = GetComponentInChildren<Animator>();
         _inputHandler = GetComponent<InputHandler>();
         _stateChangesTracker = GetComponent<StateChangesTracker>();
+        _playerHelper = GetComponentInChildren<PlayerHelper>();
 
         CurrentFlipDirection = 1;
         NormalGravityScale = _myRigidbody2D.gravityScale;
@@ -93,10 +98,14 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         _inventory.OnWeaponTaken += ShowWeapon;
+        _playerHelper.WeaponHit += CheckIfEnemyHit;
+        _playerHelper.WeaponExitHit += ChangeEnemyIsHit;
     }
     private void OnDisable()
     {
         _inventory.OnWeaponTaken -= ShowWeapon;
+        _playerHelper.WeaponHit -= CheckIfEnemyHit;
+        _playerHelper.WeaponExitHit -= ChangeEnemyIsHit;
     }
     public void SetVelocityX(float velocity)
     {
@@ -114,6 +123,16 @@ public class Player : MonoBehaviour
     {
         return Physics2D.OverlapCircle(_checkGroundPoint.position, _playerData.CheckRadius, _playerData.WhatIsGround);
     }
+    public void CheckIfEnemyHit()
+    {
+        EnemyIsHit = Physics2D.OverlapCircle(_checkAttackPoint.position, _playerData.CheckRadius, _playerData.WhatIsEnemy);
+        Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(_checkAttackPoint.position, _playerData.CheckRadius, _playerData.WhatIsEnemy);
+        foreach (Collider2D enemy in enemiesHit)
+        {
+            enemy.GetComponent<EnemyHealthController>().ApplyDamage(_damage);
+        }
+    }
+    public void ChangeEnemyIsHit(bool hit) => EnemyIsHit = hit;
 
     public bool IsOnThePlatform()
     {

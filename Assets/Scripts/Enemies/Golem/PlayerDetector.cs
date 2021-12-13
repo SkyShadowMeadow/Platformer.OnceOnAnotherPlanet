@@ -41,5 +41,4 @@ public class PlayerDetector : MonoBehaviour
         }
         else return Vector2.zero;
     }
-
 }

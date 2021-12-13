@@ -27,6 +27,7 @@ public class PlayerData : ScriptableObject
     public LayerMask WhatIsGround;
     public LayerMask WhatIsStairs;
     public LayerMask WhatIsPltform;
+    public LayerMask WhatIsEnemy;
 
 
 

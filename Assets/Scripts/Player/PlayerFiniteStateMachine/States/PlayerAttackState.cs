@@ -25,10 +25,14 @@ public class PlayerAttackState : IState
     public void OnExit()
     {
         _animator.SetBool(IsAttacking, false);
+        _player.ChangeEnemyIsHit(false);
     }
 
     public void Tick()
     {
-
+        if (_player.EnemyIsHit)
+        {
+            Debug.Log("EnemyIsHit");
+        }
     }
 }

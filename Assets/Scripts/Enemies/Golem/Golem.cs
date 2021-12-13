@@ -76,4 +76,5 @@ public class Golem : Enemy
         transform.localScale = new Vector3(-1f, 1f, 1f);
         _isFacingLeft = false;
     }
+
 }
