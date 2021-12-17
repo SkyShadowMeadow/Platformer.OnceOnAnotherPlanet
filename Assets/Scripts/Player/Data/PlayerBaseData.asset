@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a8fed24eedcee4489809c04b1815cb2, type: 3}
   m_Name: PlayerBaseData
   m_EditorClassIdentifier: 
+  HealthPoints: 5
   MovenmentSpeed: 8
   JumpSpeed: 30
   AmountOfJumps: 2
@@ -28,3 +29,6 @@ MonoBehaviour:
   WhatIsPltform:
     serializedVersion: 2
     m_Bits: 256
+  WhatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 512

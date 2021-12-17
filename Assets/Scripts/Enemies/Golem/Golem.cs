@@ -8,27 +8,28 @@ public class Golem : Enemy
     public event Action<int> OnMovedChanged;
 
     [SerializeField] private Transform[] _pointsToPatrol;
-    [SerializeField] private float _damage = 3f;
 
-    public override float GetDamage() => _damage;
     public Transform[] GetPointsToPatrol() => _pointsToPatrol;
 
     private GolemStateMachine _golemStateMachine;
+    private Animator _animator;
     private float _currentFlipDirection = 0;
     private bool _isFacingLeft = true;
+    public bool DeathAnimationIsFinished { get; private set; }
 
     private void Awake()
     {
         var rigidbody2D = GetComponent<Rigidbody2D>();
-        var animator = GetComponentInChildren<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         var playerDetector = gameObject.GetComponent<PlayerDetector>();
 
         _golemStateMachine = new GolemStateMachine();
 
-        var moveToThePoint = new MoveToThePoint(this, animator);
-        var suspitionState = new SuspitionState(this, animator);
-        var pursueState = new PursueState(this, animator, playerDetector);
-        var attackState = new AttackState(this, animator);
+        var moveToThePoint = new MoveToThePoint(this, _animator);
+        var suspitionState = new SuspitionState(this, _animator);
+        var pursueState = new PursueState(this, _animator, playerDetector);
+        var attackState = new AttackState(this, _animator);
+        var deathState = new GolemDeathState(this, _animator);
 
         At(moveToThePoint, suspitionState, HasReachedThePoint());
         At(suspitionState, moveToThePoint, HasStayedEnough());
@@ -41,6 +42,11 @@ public class Golem : Enemy
         At(attackState, pursueState, HasEnemyTuPursue());
         At(attackState, suspitionState, HasPlayerOutOfRange());
 
+        At(attackState, deathState, HasEnemyDied());
+        At(suspitionState, deathState, HasEnemyDied());
+        At(pursueState, deathState, HasEnemyDied());
+        At(moveToThePoint, deathState, HasEnemyDied());
+
         _golemStateMachine.SetState(suspitionState);
 
         void At(IState to, IState from, Func<bool> condition) => _golemStateMachine.AddTransition(to, from, condition);
@@ -51,8 +57,13 @@ public class Golem : Enemy
         Func<bool> HasEnemyInRange() => () => playerDetector.IsEnemyInRange();
         Func<bool> HasPlayerOutOfRange() => () => !playerDetector.IsEnemyInRange() && !pursueState.PlayerIsReached();
         Func<bool> HasEnemyTuPursue() => () => playerDetector.IsEnemyInRange() && !pursueState.PlayerIsReached();
+        Func<bool> HasEnemyDied() => () => _isDead;
     }
 
+    private void OnEnable()
+    {
+        HitEvent.OnDied += () => DeathAnimationIsFinished = true;
+    }
     private void Update() => _golemStateMachine.Tick();
 
     public void IfShouldFlip(float targetXDirection)
@@ -76,5 +87,15 @@ public class Golem : Enemy
         transform.localScale = new Vector3(-1f, 1f, 1f);
         _isFacingLeft = false;
     }
-
+    private void OnDisable()
+    {
+        HitEvent.OnDied -= () => DeathAnimationIsFinished = true;
+    }
+    public void PlayDeathRoutine()
+    {
+        Collider2D[] allColliders = GetComponents<Collider2D>();
+        foreach (Collider2D collider in allColliders) collider.enabled = false;
+        _animator.speed = 0;
+        enabled = false;
+    }
 }

@@ -125,11 +125,12 @@ public class Player : MonoBehaviour
     }
     public void CheckIfEnemyHit()
     {
+        Debug.Log("OnHit is working");
         EnemyIsHit = Physics2D.OverlapCircle(_checkAttackPoint.position, _playerData.CheckRadius, _playerData.WhatIsEnemy);
         Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(_checkAttackPoint.position, _playerData.CheckRadius, _playerData.WhatIsEnemy);
         foreach (Collider2D enemy in enemiesHit)
         {
-            enemy.GetComponent<EnemyHealthController>().ApplyDamage(_damage);
+            enemy.GetComponent<EnemyHealthController>().ReceiveDamage(_damage);
         }
     }
     public void ChangeEnemyIsHit(bool hit) => EnemyIsHit = hit;

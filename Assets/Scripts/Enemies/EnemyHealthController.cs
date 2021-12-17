@@ -4,28 +4,34 @@ using UnityEngine;
 
 public class EnemyHealthController : MonoBehaviour
 {
-    [SerializeField] private int _healthPoints = 5;
+    [SerializeField] private EnemyHealthBar _healthBar;
 
-    public void ApplyDamage(int damage)
-    {
-        _healthPoints -= damage;
-    }
-    public void GenerateHealth()
-    {
-        _healthPoints++;
-        if(_healthPoints <= 0)
-        {
-            Debug.Log("Enemy is dead");
-        }
-    }
+    private Enemy _enemy;
+    private int _maxHealthPoints;
+    private int _currentHealth;
+
     void Start()
     {
-        
+        _enemy = GetComponent<Enemy>();
+        _maxHealthPoints = _enemy.Health;
+        _currentHealth = _maxHealthPoints;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ReceiveDamage(int damage)
     {
-        
-    }
+        Debug.Log("DamageReceinved" + damage + " " + _currentHealth);
+        if (damage >= _currentHealth) 
+        {
+            _healthBar.ToZeroHealth();
+            _enemy.Die();
+        }
+        else
+        {
+
+            _currentHealth = EnemyHealthLogic.ApplyDamage(_currentHealth, damage);
+            Debug.Log("DamageProcessed" + _currentHealth);
+            Debug.Log((float)_currentHealth / _maxHealthPoints);
+            _healthBar.TransformFillingArea((float)_currentHealth / _maxHealthPoints);
+        }
+     }
 }
