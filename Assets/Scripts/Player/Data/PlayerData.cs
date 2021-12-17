@@ -29,6 +29,9 @@ public class PlayerData : ScriptableObject
     public LayerMask WhatIsPltform;
     public LayerMask WhatIsEnemy;
 
-
+    [Header("Audio Clips")]
+    public AudioClip RunningSoung;
+    public AudioClip AttackSound;
+    public AudioClip HitSound;
 
 }

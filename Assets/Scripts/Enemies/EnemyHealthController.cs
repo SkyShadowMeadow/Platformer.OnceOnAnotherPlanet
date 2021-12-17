@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyHealthController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class EnemyHealthController : MonoBehaviour
     private Enemy _enemy;
     private int _maxHealthPoints;
     private int _currentHealth;
+
+    public event UnityAction OnReceiveDamage;
 
     void Start()
     {
@@ -19,7 +22,7 @@ public class EnemyHealthController : MonoBehaviour
 
     public void ReceiveDamage(int damage)
     {
-        Debug.Log("DamageReceinved" + damage + " " + _currentHealth);
+        OnReceiveDamage?.Invoke();
         if (damage >= _currentHealth) 
         {
             _healthBar.ToZeroHealth();
@@ -27,7 +30,6 @@ public class EnemyHealthController : MonoBehaviour
         }
         else
         {
-
             _currentHealth = EnemyHealthLogic.ApplyDamage(_currentHealth, damage);
             Debug.Log("DamageProcessed" + _currentHealth);
             Debug.Log((float)_currentHealth / _maxHealthPoints);

@@ -16,6 +16,6 @@ public class PlayerHelper : MonoBehaviour
     }
     public void OnAnimationFinished() => _stateChandesTracker.ChangeAnimationTrigger(true);
     public void OnHit() => WeaponHit?.Invoke();
-    public void ExitHit() => WeaponExitHit?.Invoke(false);
+    public void ExitHit() => WeaponExitHit?.Invoke(true);
     
 }

@@ -11,6 +11,7 @@ public class StateChangesTracker : MonoBehaviour
     private int _amountOfJumps;
     private bool _isAnimationFinished;
     private bool _isDying;
+    private bool _isAttackAnimationFinished;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class StateChangesTracker : MonoBehaviour
     public bool HasStoppedMoving() => _inputHandler.NormalizedMoveInputX == 0;
 
     public bool HasEnoughJumps() => _amountOfJumps > 0;
+    public bool AttackAnimationIsFinished() => _isAttackAnimationFinished;
 
     public bool HasLanded() => _isAnimationFinished && (_player.IsOnTheGround() || _player.IsOnThePlatform()) && Mathf.Abs(_inputHandler.NormalizedMoveInputX) <= 0.01f;
     public bool HasFinishedTheJump() => (_player.IsOnTheGround() || _player.IsOnThePlatform()) && Mathf.Abs(_inputHandler.NormalizedMoveInputX) <= 0.01f;
@@ -58,4 +60,5 @@ public class StateChangesTracker : MonoBehaviour
     public void RestoreAmountOfJumps() => _amountOfJumps = 1;
     public void ChangeAnimationTrigger(bool changed) => _isAnimationFinished = changed;
     private void MarkAsDead() => _isDying = true;
+    public void ChangeAttackAnimationStatus(bool isFinished) => _isAttackAnimationFinished = isFinished;
 }

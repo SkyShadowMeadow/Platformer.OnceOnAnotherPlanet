@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D _myRigidbody2D;
     private InputHandler _inputHandler;
     private PlayerHelper _playerHelper;
+    private AudioSource _audioSource;
 
     public PlayerStateMachine PlayerStateMachine { get; private set; }
     public float NormalGravityScale { get; private set; }
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
         _inputHandler = GetComponent<InputHandler>();
         _stateChangesTracker = GetComponent<StateChangesTracker>();
         _playerHelper = GetComponentInChildren<PlayerHelper>();
+        _audioSource = GetComponent<AudioSource>();
 
         CurrentFlipDirection = 1;
         NormalGravityScale = _myRigidbody2D.gravityScale;
@@ -46,11 +48,11 @@ public class Player : MonoBehaviour
 
         var IdlingState = new IdlingState(this, _playerAnimator);
         var DeathState = new DeathState(this, _playerAnimator);
-        var MovingState = new MovingState(this, _playerData, _playerAnimator, _inputHandler);
+        var MovingState = new MovingState(this, _playerData, _playerAnimator, _inputHandler, _audioSource);
         var JumpState = new JumpState(this, _playerData, _playerAnimator, _inputHandler, _stateChangesTracker);
         var LandedState = new LandedState(_playerAnimator, _stateChangesTracker);
         var ClimbingState = new ClimbingState(this, _playerData, _playerAnimator, _inputHandler, _stateChangesTracker);
-        var PlayerAttackState = new PlayerAttackState(this, _playerAnimator, _inputHandler, _stateChangesTracker);
+        var PlayerAttackState = new PlayerAttackState(this, _playerData, _playerAnimator, _inputHandler, _stateChangesTracker, _audioSource);
 
         At(IdlingState, MovingState, HasStartedToMove());
         At(IdlingState, JumpState, CanJump());
@@ -87,8 +89,8 @@ public class Player : MonoBehaviour
         Func<bool> HasMovedRightAfterJump() => () => _stateChangesTracker.HasMovedRightAfterJump();
         Func<bool> HasLanded() => () => _stateChangesTracker.HasLanded();
         Func<bool> CanAttack() => () => _inputHandler.AttackIsStarted;
-        Func<bool> AttackIsFinished() => () => !_inputHandler.AttackIsStarted && !_stateChangesTracker.HasStartedToMove();
-        Func<bool> AttackIsFinishedAndMove() => () => !_inputHandler.AttackIsStarted && _stateChangesTracker.HasStartedToMove();
+        Func<bool> AttackIsFinished() => () => !_inputHandler.AttackIsStarted && !_stateChangesTracker.HasStartedToMove() && _stateChangesTracker.AttackAnimationIsFinished();
+        Func<bool> AttackIsFinishedAndMove() => () => !_inputHandler.AttackIsStarted && _stateChangesTracker.HasStartedToMove() && _stateChangesTracker.AttackAnimationIsFinished();
         Func<bool> CanClimb() => () => _stateChangesTracker.CanClimb();
         Func<bool> HasDied() => () => _stateChangesTracker.HasBeenDying();
    
@@ -99,13 +101,14 @@ public class Player : MonoBehaviour
     {
         _inventory.OnWeaponTaken += ShowWeapon;
         _playerHelper.WeaponHit += CheckIfEnemyHit;
-        _playerHelper.WeaponExitHit += ChangeEnemyIsHit;
+        _playerHelper.WeaponExitHit += _stateChangesTracker.ChangeAttackAnimationStatus;
+        
     }
     private void OnDisable()
     {
         _inventory.OnWeaponTaken -= ShowWeapon;
         _playerHelper.WeaponHit -= CheckIfEnemyHit;
-        _playerHelper.WeaponExitHit -= ChangeEnemyIsHit;
+        _playerHelper.WeaponExitHit -= _stateChangesTracker.ChangeAttackAnimationStatus;
     }
     public void SetVelocityX(float velocity)
     {
@@ -132,8 +135,9 @@ public class Player : MonoBehaviour
         {
             enemy.GetComponent<EnemyHealthController>().ReceiveDamage(_damage);
         }
+        EnemyIsHit = false;
     }
-    public void ChangeEnemyIsHit(bool hit) => EnemyIsHit = hit;
+    //public void ChangeEnemyIsHit(bool hit) => EnemyIsHit = hit;
 
     public bool IsOnThePlatform()
     {

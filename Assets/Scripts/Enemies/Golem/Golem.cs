@@ -13,6 +13,7 @@ public class Golem : Enemy
 
     private GolemStateMachine _golemStateMachine;
     private Animator _animator;
+    private AudioSource _hitAudio;
     private float _currentFlipDirection = 0;
     private bool _isFacingLeft = true;
     public bool DeathAnimationIsFinished { get; private set; }
@@ -21,6 +22,7 @@ public class Golem : Enemy
     {
         var rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<Animator>();
+        _hitAudio = GetComponent<AudioSource>();
         var playerDetector = gameObject.GetComponent<PlayerDetector>();
 
         _golemStateMachine = new GolemStateMachine();
@@ -63,6 +65,7 @@ public class Golem : Enemy
     private void OnEnable()
     {
         HitEvent.OnDied += () => DeathAnimationIsFinished = true;
+        _enemyHealthController.OnReceiveDamage += PlayGetDamageEffects;
     }
     private void Update() => _golemStateMachine.Tick();
 
@@ -90,6 +93,8 @@ public class Golem : Enemy
     private void OnDisable()
     {
         HitEvent.OnDied -= () => DeathAnimationIsFinished = true;
+        _enemyHealthController.OnReceiveDamage -= PlayGetDamageEffects;
+
     }
     public void PlayDeathRoutine()
     {
@@ -97,5 +102,9 @@ public class Golem : Enemy
         foreach (Collider2D collider in allColliders) collider.enabled = false;
         _animator.speed = 0;
         enabled = false;
+    }
+    public void PlayGetDamageEffects()
+    {
+        _hitAudio.Play();
     }
 }

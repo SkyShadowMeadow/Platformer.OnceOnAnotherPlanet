@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] private PlayerHealthController _playerHealthController;
-    [SerializeField] private EnemyHealthController _enemyHealthController;
+    [SerializeField] protected EnemyHealthController _enemyHealthController;
     [SerializeField] private int _health;
     [SerializeField] private float _damage;
     protected bool _isDead;
