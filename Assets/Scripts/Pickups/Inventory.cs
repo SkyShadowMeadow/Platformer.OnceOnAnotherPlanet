@@ -12,6 +12,11 @@ public class Inventory : MonoBehaviour
     private int _ores;
     private bool _hasWeapon;
 
+    private void Awake()
+    {
+        _ores = 0;
+        Debug.Log("ores" + _ores);
+    }
     public void TakeOre()
     {
         _ores++;
@@ -21,6 +26,10 @@ public class Inventory : MonoBehaviour
     { 
         _hasWeapon = true;
         OnWeaponTaken?.Invoke();
+    }
+    private void OnDisable()
+    {
+        _ores = 0;
     }
     public int GetOres() => _ores;
 }

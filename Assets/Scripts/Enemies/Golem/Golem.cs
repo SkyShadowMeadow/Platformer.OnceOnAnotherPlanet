@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Golem : Enemy
 {
     public event Action<int> OnMovedChanged;
 
     [SerializeField] private Transform[] _pointsToPatrol;
+    [SerializeField] private PickUp _itemToDropWhenDead;
 
     public Transform[] GetPointsToPatrol() => _pointsToPatrol;
 
@@ -64,9 +66,17 @@ public class Golem : Enemy
 
     private void OnEnable()
     {
+        HitEvent.OnDied += DropTreasures;
         HitEvent.OnDied += () => DeathAnimationIsFinished = true;
         _enemyHealthController.OnReceiveDamage += PlayGetDamageEffects;
     }
+
+    private void DropTreasures()
+    {
+        Vector3 positionToDrop = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+        Instantiate(_itemToDropWhenDead, positionToDrop, Quaternion.identity);
+    }
+
     private void Update() => _golemStateMachine.Tick();
 
     public void IfShouldFlip(float targetXDirection)
@@ -94,6 +104,8 @@ public class Golem : Enemy
     {
         HitEvent.OnDied -= () => DeathAnimationIsFinished = true;
         _enemyHealthController.OnReceiveDamage -= PlayGetDamageEffects;
+        HitEvent.OnDied -= DropTreasures;
+
 
     }
     public void PlayDeathRoutine()

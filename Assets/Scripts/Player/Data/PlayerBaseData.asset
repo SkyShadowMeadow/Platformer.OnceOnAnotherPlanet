@@ -32,3 +32,6 @@ MonoBehaviour:
   WhatIsEnemy:
     serializedVersion: 2
     m_Bits: 512
+  RunningSoung: {fileID: 8300000, guid: ffe1bde2354254642bb3c9038ccb34fc, type: 3}
+  AttackSound: {fileID: 8300000, guid: 1abb4aed89b59bf49bb18f854b74285d, type: 3}
+  HitSound: {fileID: 0}

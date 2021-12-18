@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponPickup : MonoBehaviour
+public class WeaponPickup : PickUp
 {
     [SerializeField] private GameObject _vfxOnTakeParticles;
-    [SerializeField] private Inventory _inventory;
+    private Inventory _inventory;
 
     private float lifetime = 0.7f;
     private ParticleSystem _onTakenParticles;
@@ -15,6 +15,7 @@ public class WeaponPickup : MonoBehaviour
     {
         _onTakenParticles = _vfxOnTakeParticles.GetComponent<ParticleSystem>();
         _onTakenSound = GetComponent<AudioSource>();
+        _inventory = FindObjectOfType<Inventory>();
     }
 
 

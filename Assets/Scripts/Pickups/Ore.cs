@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ore : MonoBehaviour
+public class Ore : PickUp
 {
     [SerializeField] private GameObject _vfxOnTakeParticles;
-    [SerializeField] private Inventory _inventory;
+    private Inventory _inventory;
 
     private float lifetime = 0.7f;
     private ParticleSystem _onTakenParticles;
@@ -14,6 +14,7 @@ public class Ore : MonoBehaviour
 
     void Start()
     {
+        _inventory = FindObjectOfType<Inventory>();
         _onTakenParticles = _vfxOnTakeParticles.GetComponent<ParticleSystem>();
         _onTakenSound = GetComponent<AudioSource>();
     }
