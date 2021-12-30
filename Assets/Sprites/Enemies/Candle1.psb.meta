@@ -98,8 +98,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 84
-      y: 49
+      x: 104
+      y: 36
       width: 37
       height: 43
     spriteID: 27ea49f995f77a74f9bdb527e05dc602
@@ -111,7 +111,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 60, y: -26}
+    uvTransform: {x: 34, y: -39}
   - name: Berries
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -119,8 +119,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 218
+      x: 104
+      y: 4
       width: 67
       height: 24
     spriteID: 60383ee8c52014c48b6f5e22af833098
@@ -132,7 +132,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -2, y: 209}
+    uvTransform: {x: 52, y: -5}
   - name: Leaves
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -140,8 +140,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 84
-      y: 4
+      x: 4
+      y: 211
       width: 85
       height: 37
     spriteID: cfce65ba9edcd454b97616bc6e60f096
@@ -153,7 +153,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 84, y: -5}
+    uvTransform: {x: -42, y: 202}
   - name: Candlestick
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -163,7 +163,7 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 72
+      width: 93
       height: 206
     spriteID: a6ad4a2581ebc564fab704f13c3ab00b
     spriteBone: []
@@ -174,7 +174,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -3, y: 4}
+    uvTransform: {x: -49, y: 4}
   characterData:
     bones: []
     parts: []
@@ -209,7 +209,7 @@ ScriptedImporter:
     spriteName: 
     isGroup: 1
     parentIndex: -1
-    spriteID: 00000000000000000000000000000000
+    spriteID: d330e7bec5a4e1f41a70adcf0e4f71fc
     layerID: 12
     mosaicPosition: {x: 0, y: 0}
     flatten: 0
@@ -221,7 +221,7 @@ ScriptedImporter:
     parentIndex: 0
     spriteID: 27ea49f995f77a74f9bdb527e05dc602
     layerID: 11
-    mosaicPosition: {x: 84, y: 49}
+    mosaicPosition: {x: 104, y: 36}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -231,7 +231,7 @@ ScriptedImporter:
     parentIndex: 0
     spriteID: 60383ee8c52014c48b6f5e22af833098
     layerID: 9
-    mosaicPosition: {x: 4, y: 218}
+    mosaicPosition: {x: 104, y: 4}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -241,7 +241,7 @@ ScriptedImporter:
     parentIndex: 0
     spriteID: cfce65ba9edcd454b97616bc6e60f096
     layerID: 8
-    mosaicPosition: {x: 84, y: 4}
+    mosaicPosition: {x: 4, y: 211}
     flatten: 0
     isImported: 1
     isVisible: 1
