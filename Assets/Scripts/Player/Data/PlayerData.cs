@@ -32,6 +32,6 @@ public class PlayerData : ScriptableObject
     [Header("Audio Clips")]
     public AudioClip RunningSoung;
     public AudioClip AttackSound;
-    public AudioClip HitSound;
+    public AudioClip ApplyDamageSound;
 
 }

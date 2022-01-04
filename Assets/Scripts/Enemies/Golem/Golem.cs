@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 public class Golem : Enemy
 {
-    public event Action<int> OnMovedChanged;
-
     [SerializeField] private Transform[] _pointsToPatrol;
     [SerializeField] private PickUp _itemToDropWhenDead;
 
@@ -16,7 +14,6 @@ public class Golem : Enemy
     private GolemStateMachine _golemStateMachine;
     private Animator _animator;
     private AudioSource _hitAudio;
-    private float _currentFlipDirection = 0;
     private bool _isFacingLeft = true;
     public bool DeathAnimationIsFinished { get; private set; }
 
@@ -105,8 +102,6 @@ public class Golem : Enemy
         HitEvent.OnDied -= () => DeathAnimationIsFinished = true;
         _enemyHealthController.OnReceiveDamage -= PlayGetDamageEffects;
         HitEvent.OnDied -= DropTreasures;
-
-
     }
     public void PlayDeathRoutine()
     {

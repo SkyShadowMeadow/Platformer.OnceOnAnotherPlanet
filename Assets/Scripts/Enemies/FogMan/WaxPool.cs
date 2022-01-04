@@ -17,8 +17,10 @@ public class WaxPool : MonoBehaviour
         }
     }
 
-    protected bool TryToGetWaxBlob(out GameObject waxBlob) { waxBlob = _waxPool.First(p => p.activeSelf == false);
-        return waxBlob != null;
+    protected GameObject GetWaxBlob() 
+    {
+        GameObject waxBlob = _waxPool.FirstOrDefault(p => p.activeSelf == false);
+        return waxBlob;
     }
 
 }

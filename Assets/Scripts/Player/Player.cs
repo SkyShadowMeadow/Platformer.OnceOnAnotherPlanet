@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -101,8 +99,7 @@ public class Player : MonoBehaviour
     {
         _inventory.OnWeaponTaken += ShowWeapon;
         _playerHelper.WeaponHit += CheckIfEnemyHit;
-        _playerHelper.WeaponExitHit += _stateChangesTracker.ChangeAttackAnimationStatus;
-        
+        _playerHelper.WeaponExitHit += _stateChangesTracker.ChangeAttackAnimationStatus;       
     }
     private void OnDisable()
     {
@@ -128,7 +125,6 @@ public class Player : MonoBehaviour
     }
     public void CheckIfEnemyHit()
     {
-        Debug.Log("OnHit is working");
         EnemyIsHit = Physics2D.OverlapCircle(_checkAttackPoint.position, _playerData.CheckRadius, _playerData.WhatIsEnemy);
         Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(_checkAttackPoint.position, _playerData.CheckRadius, _playerData.WhatIsEnemy);
         foreach (Collider2D enemy in enemiesHit)
@@ -137,8 +133,6 @@ public class Player : MonoBehaviour
         }
         EnemyIsHit = false;
     }
-    //public void ChangeEnemyIsHit(bool hit) => EnemyIsHit = hit;
-
     public bool IsOnThePlatform()
     {
         return Physics2D.OverlapCircle(_checkGroundPoint.position, _playerData.CheckRadius, _playerData.WhatIsPltform);
