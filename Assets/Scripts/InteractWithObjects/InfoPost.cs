@@ -16,11 +16,17 @@ public class InfoPost : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnTraverseInfoPost.Invoke();
-        OnEnterInfopost?.Invoke(_message.GetMessageText());
+        if (collision.GetComponent<Player>())
+        {
+            OnTraverseInfoPost.Invoke();
+            OnEnterInfopost?.Invoke(_message.GetMessageText());
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        OnExitInfoPost.Invoke();
+        if (collision.GetComponent<Player>())
+        {
+            OnExitInfoPost.Invoke();
+        }
     }
 }
