@@ -31,7 +31,6 @@ public class FogMan : MonoBehaviour
             ChangeTargetPointIndex();
             StartMovement();
         }
-
     }
 
     private void MoveToThePoint() => transform.position = Vector2.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);

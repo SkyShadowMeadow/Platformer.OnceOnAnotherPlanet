@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackState : IState
@@ -16,9 +14,7 @@ public class AttackState : IState
     }
 
     public void Tick()
-    {
-        //Debug.Log("I'm attacking");
-    }
+    {    }
 
     public void OnEnter()
     {

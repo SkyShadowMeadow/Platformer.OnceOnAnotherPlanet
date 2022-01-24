@@ -14,7 +14,6 @@ public class HitEvent : MonoBehaviour
     {
         _enemy = GetComponentInParent<Enemy>();
         damage = _enemy.Damage;
-        Debug.Log("WhatTheDamage:" + damage);
     }
     public void OnHit()
     {
