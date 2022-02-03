@@ -152,10 +152,10 @@ TextureImporter:
       name: StoneFace1_1
       rect:
         serializedVersion: 2
-        x: 2901
-        y: 310
-        width: 53
-        height: 49
+        x: 2865
+        y: 363
+        width: 51
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,6 +165,27 @@ TextureImporter:
       bones: []
       spriteID: 5f9ebe63b49a185429922fbc69ab49ca
       internalID: 1424616950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoneFace1_2
+      rect:
+        serializedVersion: 2
+        x: 3015
+        y: 359
+        width: 51
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a7d878527e4c28448aaf5856245c2bb
+      internalID: 1823319707
       vertices: []
       indices: 
       edges: []
@@ -181,6 +202,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       StoneFace1_1: 1424616950
+      StoneFace1_2: 1823319707
       StoneFace1_0: 964731949
   spritePackingTag: 
   pSDRemoveMatte: 0
