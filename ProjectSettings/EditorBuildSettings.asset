@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Initial.unity
+    guid: 4764413425684044fafb07c3dc86a152
+  - enabled: 1
+    path: Assets/Scenes/Level1_StoneValley.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 10860d54e87f8a8449e5b264fa676ad5, type: 2}
