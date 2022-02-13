@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e77fb43f505d894a8aa4965ac8cbb16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 0.5
+  _waxData: {fileID: 11400000, guid: 25a8ffe7fd4f56f4899f3d4480012f21, type: 2}
   _hitPlayerParticles: {fileID: 2134467534342001745}
 --- !u!58 &7715994618602544942
 CircleCollider2D:

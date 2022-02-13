@@ -1,36 +1,54 @@
 using System.Collections;
-using System.Collections.Generic;
+using Logic.DamageLogic;
 using UnityEngine;
+using Enemies.EnemyData;
 
-public class WaxBlob : MonoBehaviour
+
+namespace Enemies
 {
-    [SerializeField] private float _damage;
-    [SerializeField] private ParticleSystem _hitPlayerParticles;
-    private SpriteRenderer _spriteRenderer;
+    public class WaxBlob : MonoBehaviour, IDamage
+    {
+        [SerializeField] private EnemyData.EnemyData _waxData;
+        [SerializeField] private ParticleSystem _hitPlayerParticles;
+        private SpriteRenderer _spriteRenderer;
+        private float _damage;
 
-    private void Awake()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        _spriteRenderer.enabled = false;
-        if (collision.TryGetComponent(out PlayerHealthController playerHealth))
+        private void Awake()
         {
-            StartCoroutine(WaitForParticlesPlayed(playerHealth));
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _damage = _waxData.Damage;
         }
-        else
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out PlayerHealthController playerHealth))
+                ProcessDamage(playerHealth);
+            else
+                ReturnToPool();
+        }
+
+        public void ProcessDamage(PlayerHealthController playerHealth)
+        {
+            _spriteRenderer.enabled = false;
+            playerHealth.HandleDamage(_damage);
+            StartCoroutine(WaitForParticlesPlayed());
+        }
+
+        private void ReturnToPool()
         {
             _spriteRenderer.enabled = true;
             this.gameObject.SetActive(false);
         }
-    }
-    private IEnumerator WaitForParticlesPlayed(PlayerHealthController playerHealth)
-    {
-        playerHealth.HandleDamage(_damage);
-        _hitPlayerParticles.Play();
-        yield return new WaitForSeconds(0.5f);
-        _spriteRenderer.enabled = true;
-        this.gameObject.SetActive(false);
+
+        private IEnumerator WaitForParticlesPlayed()
+        {
+            _hitPlayerParticles.Play();
+            yield return new WaitForSeconds(0.5f);
+            _spriteRenderer.enabled = true;
+            this.gameObject.SetActive(false);
+        }
+        
+
+        
     }
 }
