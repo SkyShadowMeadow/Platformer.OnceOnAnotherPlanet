@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +13,15 @@ public class PlayerHelper : MonoBehaviour
         _stateChandesTracker = GetComponentInParent<StateChangesTracker>();
     }
     public void OnAnimationFinished() => _stateChandesTracker.ChangeAnimationTrigger(true);
-    public void OnHit() => WeaponHit?.Invoke();
-    public void ExitHit() => WeaponExitHit?.Invoke(true);
-    
+    public void OnHit() 
+        => WeaponHit?.Invoke();
+    public void ExitHit() 
+        => WeaponExitHit?.Invoke(true);
+
+    public void OnDeathPlayed()
+    {
+        _playerParent.enabled = false;
+        GetComponent<Animator>().enabled = false;
+        Debug.Log(GetComponent<Animator>().enabled);
+    }
 }

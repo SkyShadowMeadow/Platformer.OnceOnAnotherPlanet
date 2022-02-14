@@ -4,9 +4,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public const string PLAYER_TAG = "Player";
-
-    public static event OnThroughtPlatform OnClimbDown;
-    public delegate void OnThroughtPlatform();
+    public static event OnThroughPlatform OnClimbDown;
+    public delegate void OnThroughPlatform();
 
     [SerializeField] private Inventory _inventory;
     [SerializeField] GameObject _weapon;
@@ -65,9 +64,11 @@ public class Player : MonoBehaviour
 
         At(JumpState, LandedState, HasFinishedTheJump());
         At(JumpState, MovingState, HasMovedRightAfterJump());
+        At(JumpState, DeathState, HasDied());
 
         At(LandedState, IdlingState, HasLanded());
         At(LandedState, MovingState, HasStartedToMove());
+        At(LandedState, DeathState, HasDied());
       
         At(PlayerAttackState, IdlingState, AttackIsFinished());
         At(PlayerAttackState, MovingState, AttackIsFinishedAndMove());
