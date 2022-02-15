@@ -1,28 +1,32 @@
 using UnityEngine;
 
-public class DeathState : IState
+namespace Hero.States
 {
-    private readonly Player _player;
-    private readonly Animator _animator;
-    private static readonly int IsDead = Animator.StringToHash("IsDead");
+    public class DeathState : IState
+    {
+        private readonly Player _player;
+        private readonly Animator _animator;
+        private static readonly int IsDead = Animator.StringToHash("IsDead");
 
-    public DeathState(Player player, Animator animator)
-    {
-        _player = player;
-        _animator = animator;
-    }
-    public void OnEnter()
-    {
-        _animator.SetBool(IsDead, true);
-    }
+        public DeathState(Player player, Animator animator)
+        {
+            _player = player;
+            _animator = animator;
+        }
 
-    public void OnExit()
-    {
-    }
+        public void OnEnter()
+        {
+            _animator.SetBool(IsDead, true);
+        }
 
-    public void Tick()
-    {
-        //if (_stateChangesTracker.DeathAnimationIsFinished())
-        //    OnExit();
+        public void OnExit()
+        {
+        }
+
+        public void Tick()
+        {
+            //if (_stateChangesTracker.DeathAnimationIsFinished())
+            //    OnExit();
+        }
     }
 }

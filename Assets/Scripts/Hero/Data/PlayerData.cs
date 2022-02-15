@@ -26,6 +26,7 @@ public class PlayerData : ScriptableObject
     public LayerMask WhatIsStairs;
     public LayerMask WhatIsPltform;
     public LayerMask WhatIsEnemy;
+    public LayerMask WhatIsLethalObstacle;
 
     [Header("Audio Clips")]
     public AudioClip RunningSoung;

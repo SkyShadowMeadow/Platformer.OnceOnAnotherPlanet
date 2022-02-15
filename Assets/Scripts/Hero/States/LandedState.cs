@@ -1,35 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class LandedState : IState
+namespace Hero.States
 {
-    private readonly StateChangesTracker _stateChangesTracker;
-    private readonly Animator _animator;
-
-    private static readonly int IsLanding = Animator.StringToHash("IsLanding");
-
-    public LandedState(Animator animator, StateChangesTracker stateChangesTracker)
+    public class LandedState : IState
     {
-        _animator = animator;
-        _stateChangesTracker = stateChangesTracker;
+        private readonly StateChangesTracker _stateChangesTracker;
+        private readonly Animator _animator;
+
+        private static readonly int IsLanding = Animator.StringToHash("IsLanding");
+
+        public LandedState(Animator animator, StateChangesTracker stateChangesTracker)
+        {
+            _animator = animator;
+            _stateChangesTracker = stateChangesTracker;
+        }
+
+
+        public void OnEnter()
+        {
+            _animator.SetBool(IsLanding, true);
+            _stateChangesTracker.ChangeAnimationTrigger(false);
+        }
+
+        public void Tick()
+        {
+
+        }
+
+        public void OnExit()
+        {
+            _animator.SetBool(IsLanding, false);
+            _animator.SetFloat("yVelocity", 0);
+        }
+
     }
-
-
-    public void OnEnter()
-    {
-        _animator.SetBool(IsLanding, true);
-        _stateChangesTracker.ChangeAnimationTrigger(false);
-    }
-
-    public void Tick()
-    {
-
-    }
-    public void OnExit()
-    {
-        _animator.SetBool(IsLanding, false);
-        _animator.SetFloat("yVelocity", 0);
-    }
-
 }

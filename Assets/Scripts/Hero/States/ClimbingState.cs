@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+namespace Hero.States
+{
     public class ClimbingState : IState
     {
         private readonly Player _player;
@@ -48,5 +48,6 @@ using UnityEngine;
 
         }
     }
+}
 
 

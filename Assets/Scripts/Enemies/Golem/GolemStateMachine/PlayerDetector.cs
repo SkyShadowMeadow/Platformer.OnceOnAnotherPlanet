@@ -1,4 +1,5 @@
 using UnityEngine;
+using Hero;
 
 public class PlayerDetector : MonoBehaviour
 {

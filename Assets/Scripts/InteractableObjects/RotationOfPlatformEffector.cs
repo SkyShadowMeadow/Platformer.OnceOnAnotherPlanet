@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using Hero;
 using UnityEngine;
 
 public class RotationOfPlatformEffector : MonoBehaviour
