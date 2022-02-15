@@ -27,7 +27,6 @@ namespace Hero.States
 
         public void OnEnter()
         {
-            Debug.Log("AttackState enter");
             _audioSource.PlayOneShot(_playerData.AttackSound);
             _animator.SetBool(IsAttacking, true);
             _stateChangesTracker.ChangeAttackAnimationStatus(false);
@@ -36,13 +35,10 @@ namespace Hero.States
 
         public void OnExit()
         {
-            Debug.Log("AttackState exit");
-
             _audioSource.Stop();
             _attackSoundIsPlaying = false;
             _animator.SetBool(IsAttacking, false);
             _inputHandler.UseAttack();
-            //_player.ChangeEnemyIsHit(false);
         }
 
         public void Tick()
@@ -50,13 +46,6 @@ namespace Hero.States
             if (_stateChangesTracker.AttackAnimationIsFinished())
             {
                 OnExit();
-            }
-            //_inputHandler.UseAttack();
-
-            Debug.Log(_stateChangesTracker.AttackAnimationIsFinished());
-            if (_player.EnemyIsHit)
-            {
-                Debug.Log("EnemyIsHit");
             }
         }
     }

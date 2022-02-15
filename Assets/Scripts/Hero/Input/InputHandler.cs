@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
-    public event Action OnJumpStarted;
     private float _startJump;
     public Vector2 RawMoveInput { get; private set; }
     public int NormalizedMoveInputX { get; private set; } 
@@ -35,8 +34,6 @@ public class InputHandler : MonoBehaviour
     }
     public void OnAttack(InputValue value)
     {
-        Debug.Log("Attack");
-
         if (value.isPressed)
             AttackIsStarted = true;
     }

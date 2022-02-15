@@ -29,7 +29,6 @@ namespace Hero
         public PlayerStateMachine PlayerStateMachine { get; private set; }
         public float NormalGravityScale { get; private set; }
         public int CurrentFlipDirection { get; private set; }
-        public bool EnemyIsHit { get; private set; }
 
         private Vector2 _workspace;
 
@@ -114,14 +113,14 @@ namespace Hero
         private void OnEnable()
         {
             _inventory.OnWeaponTaken += ShowWeapon;
-            _playerHelper.WeaponHit += CheckIfEnemyHit;
+            _playerHelper.WeaponHit += HitEnemy;
             _playerHelper.WeaponExitHit += _stateChangesTracker.ChangeAttackAnimationStatus;
         }
 
         private void OnDisable()
         {
             _inventory.OnWeaponTaken -= ShowWeapon;
-            _playerHelper.WeaponHit -= CheckIfEnemyHit;
+            _playerHelper.WeaponHit -= HitEnemy;
             _playerHelper.WeaponExitHit -= _stateChangesTracker.ChangeAttackAnimationStatus;
         }
 
@@ -144,19 +143,24 @@ namespace Hero
             return Physics2D.OverlapCircle(_checkGroundPoint.position, _playerData.CheckRadius,
                 _playerData.WhatIsGround);
         }
-
-        public void CheckIfEnemyHit()
+        public bool EnemyIsHit()
         {
-            EnemyIsHit = Physics2D.OverlapCircle(_checkAttackPoint.position, _playerData.CheckRadius,
+            return Physics2D.OverlapCircle(_checkAttackPoint.position, _playerData.CheckRadius,
                 _playerData.WhatIsEnemy);
-            Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(_checkAttackPoint.position, _playerData.CheckRadius,
-                _playerData.WhatIsEnemy);
-            foreach (Collider2D enemy in enemiesHit)
-            {
-                enemy.GetComponent<EnemyHealthController>().ReceiveDamage(_damage);
-            }
+        }
 
-            EnemyIsHit = false;
+        public void HitEnemy()
+        {
+            if (EnemyIsHit())
+            {
+                Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(_checkAttackPoint.position,
+                    _playerData.CheckRadius, _playerData.WhatIsEnemy);
+                foreach (Collider2D enemy in enemiesHit)
+                {
+                    Debug.Log("Enemie is hit");
+                    enemy.GetComponent<EnemyHealthController>().ReceiveDamage(_damage);
+                }
+            }
         }
 
         public bool IsOnThePlatform()

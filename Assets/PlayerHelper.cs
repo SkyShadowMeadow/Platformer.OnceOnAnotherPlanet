@@ -15,8 +15,12 @@ public class PlayerHelper : MonoBehaviour
         _stateChandesTracker = GetComponentInParent<StateChangesTracker>();
     }
     public void OnAnimationFinished() => _stateChandesTracker.ChangeAnimationTrigger(true);
-    public void OnHit() 
-        => WeaponHit?.Invoke();
+
+    public void OnHit()
+    {
+        _playerParent.HitEnemy();
+    }
+
     public void ExitHit() 
         => WeaponExitHit?.Invoke(true);
 
@@ -24,6 +28,5 @@ public class PlayerHelper : MonoBehaviour
     {
         _playerParent.enabled = false;
         GetComponent<Animator>().enabled = false;
-        Debug.Log(GetComponent<Animator>().enabled);
     }
 }
