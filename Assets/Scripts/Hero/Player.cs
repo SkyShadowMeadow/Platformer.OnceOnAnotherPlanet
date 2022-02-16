@@ -8,7 +8,6 @@ namespace Hero
     {
         public const string PLAYER_TAG = "Player";
         public static event OnThroughPlatform OnClimbDown;
-
         public delegate void OnThroughPlatform();
 
         [SerializeField] private Inventory _inventory;

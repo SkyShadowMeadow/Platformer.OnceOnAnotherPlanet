@@ -12,7 +12,7 @@ namespace InteractableObjects
         public UnityEvent OnEnterInfoPost;
         public UnityEvent OnExitInfoPost;
     
-        public static event Action<string> OnEnterInfopost;
+        public static event Action<string> OnMessageSent;
 
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -20,7 +20,7 @@ namespace InteractableObjects
             if (collision.GetComponent<Player>())
             {
                 OnEnterInfoPost.Invoke();
-                OnEnterInfopost?.Invoke(_message.GetMessageText());
+                OnMessageSent?.Invoke(_message.GetMessageText());
             }
         }
         private void OnTriggerExit2D(Collider2D collision)

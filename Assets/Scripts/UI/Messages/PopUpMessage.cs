@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using InteractableObjects;
 using TMPro;
 using UnityEngine;
@@ -8,29 +7,32 @@ public class PopUpMessage : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
 
-    private float _delayToDesactivate = 1f;
-    
+    private float _delayToDeactivate = 1f;
+
     private void OnEnable()
     {
-        InfoPost.OnEnterInfopost += GetMessageFromTheInfoPost;
+        InfoPost.OnMessageSent += GetMessageFromTheInfoPost;
+        FinishLevelCondition.OnFinishMessageSent += GetMessageFromTheInfoPost;
+    }
+
+    private void OnDisable()
+    {
+        InfoPost.OnMessageSent -= GetMessageFromTheInfoPost;
+        FinishLevelCondition.OnFinishMessageSent -= GetMessageFromTheInfoPost;
     }
 
     public void ActivateCanvas()
-    {
-        gameObject.SetActive(true);
-    }
-    public void GetMessageFromTheInfoPost(string messageText)
-    {
-        textMeshProUGUI.text = messageText;
-
-    }
+        => gameObject.SetActive(true);
+    
     public void DesactivateCanvas()
-    {
-        StartCoroutine(DesactivateCanvasWithDelay());
-    }
+        => StartCoroutine(DesactivateCanvasWithDelay());
+    
+    public void GetMessageFromTheInfoPost(string messageText)
+        => textMeshProUGUI.text = messageText;
+
     IEnumerator DesactivateCanvasWithDelay()
     {
-        yield return new WaitForSeconds(_delayToDesactivate);
+        yield return new WaitForSeconds(_delayToDeactivate);
         gameObject.SetActive(false);
     }
 }
