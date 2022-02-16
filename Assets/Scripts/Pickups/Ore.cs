@@ -20,10 +20,11 @@ public class Ore : PickUp
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == Player.PLAYER_TAG)
+        if (collision.TryGetComponent(out Player player))
         {
+            player.gameObject.GetComponent<PickUpHandler>().CollectItems();
             PlayTakenRoutine();
-            _inventory.TakeOre();
+            //_inventory.TakeOre();
         }
     }
 private void PlayTakenRoutine()

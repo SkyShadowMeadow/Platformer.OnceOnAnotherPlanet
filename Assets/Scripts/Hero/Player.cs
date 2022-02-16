@@ -17,6 +17,7 @@ namespace Hero
         [SerializeField] private Transform _checkStairPoint;
         [SerializeField] private Transform _checkAttackPoint;
         [SerializeField] private int _damage = 3;
+        [SerializeField] private PickUpHandler _pickUpHandler;
 
         private StateChangesTracker _stateChangesTracker;
         private Animator _playerAnimator;
@@ -111,14 +112,14 @@ namespace Hero
 
         private void OnEnable()
         {
-            _inventory.OnWeaponTaken += ShowWeapon;
+            _pickUpHandler.OnWeaponTaken += ShowWeapon;
             _playerHelper.WeaponHit += HitEnemy;
             _playerHelper.WeaponExitHit += _stateChangesTracker.ChangeAttackAnimationStatus;
         }
 
         private void OnDisable()
         {
-            _inventory.OnWeaponTaken -= ShowWeapon;
+            _pickUpHandler.OnWeaponTaken -= ShowWeapon;
             _playerHelper.WeaponHit -= HitEnemy;
             _playerHelper.WeaponExitHit -= _stateChangesTracker.ChangeAttackAnimationStatus;
         }

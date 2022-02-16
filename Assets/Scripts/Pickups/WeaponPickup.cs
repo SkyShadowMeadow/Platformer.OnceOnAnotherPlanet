@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using Hero;
 using UnityEngine;
 
 public class WeaponPickup : PickUp
 {
     [SerializeField] private GameObject _vfxOnTakeParticles;
-    private Inventory _inventory;
 
     private float lifetime = 0.7f;
     private ParticleSystem _onTakenParticles;
@@ -16,16 +13,16 @@ public class WeaponPickup : PickUp
     {
         _onTakenParticles = _vfxOnTakeParticles.GetComponent<ParticleSystem>();
         _onTakenSound = GetComponent<AudioSource>();
-        _inventory = FindObjectOfType<Inventory>();
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == Player.PLAYER_TAG)
+        if (collision.TryGetComponent(out Player player))
         {
+            player.gameObject.GetComponent<PickUpHandler>().TakeWeapon();
             PlayTakenRoutine();
-            _inventory.TakeWeapon();
+            //_inventory.TakeOre();
         }
     }
     private void PlayTakenRoutine()

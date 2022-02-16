@@ -1,21 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Hero;
 using TMPro;
 using UnityEngine;
 
 public class RepresantationOfChangesOnUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _howManyOres;
-    [SerializeField] private  Inventory _playerInventory;
+    [SerializeField] private  PickUpHandler _pickUpHandler;
 
     private void OnEnable()
     {
-        _playerInventory.OnOreTaken += GetNumberOfOresOnUI;
+        _pickUpHandler.OnOreTaken += GetNumberOfOresOnUI;
     }
     private void OnDisable()
     {
-        _playerInventory.OnOreTaken -= GetNumberOfOresOnUI;
+        _pickUpHandler.OnOreTaken -= GetNumberOfOresOnUI;
     }
     void Start()
     {
@@ -23,7 +24,7 @@ public class RepresantationOfChangesOnUI : MonoBehaviour
     }
     public void GetNumberOfOresOnUI()
     {
-        _howManyOres.text = _playerInventory.GetOres().ToString();
+        _howManyOres.text = _pickUpHandler.NumberCollected.ToString();
     }
 
 }

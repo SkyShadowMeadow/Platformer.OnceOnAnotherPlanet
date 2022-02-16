@@ -1,15 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Hero
 {
     public class PickUpHandler : MonoBehaviour
     {
-        private int _numberCollected = 10;
-        public int NumberCollected => _numberCollected;
+        public event Action OnWeaponTaken;
+        public event Action OnOreTaken;
         
-        public void CollectItems()
-            => _numberCollected++;
+        private int _numberCollected = 0;
+        public int NumberCollected => _numberCollected;
 
+        public void CollectItems()
+        {
+            _numberCollected++;
+            OnOreTaken?.Invoke();
+        }
+        public void TakeWeapon()
+            => OnWeaponTaken?.Invoke();
         public void ClearCollected()
             => _numberCollected = 0;
     }
