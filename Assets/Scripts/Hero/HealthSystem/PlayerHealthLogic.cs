@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-
-public class PlayerHealthLogic
+namespace Hero.HealthSystem
 {
-    public static float ApplyDamage(float currentHealthPoints, float damage) => currentHealthPoints - damage;
+    public class PlayerHealthLogic
+    {
+        public static float ApplyDamage(float currentHealthPoints, float damage) 
+            => currentHealthPoints - damage;
+    }
 }

@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthPoints: 5
   MovenmentSpeed: 8
+  Damage: 1
   JumpSpeed: 30
-  AmountOfJumps: 2
-  CoyoteTime: 0.1
   ClimbSpeed: 5
   CheckDistanceToStairs: 0.2
   CheckRadius: 0.2
@@ -32,9 +31,6 @@ MonoBehaviour:
   WhatIsEnemy:
     serializedVersion: 2
     m_Bits: 512
-  WhatIsLethalObstacle:
-    serializedVersion: 2
-    m_Bits: 2048
   RunningSoung: {fileID: 8300000, guid: ffe1bde2354254642bb3c9038ccb34fc, type: 3}
   AttackSound: {fileID: 8300000, guid: 1abb4aed89b59bf49bb18f854b74285d, type: 3}
   ApplyDamageSound: {fileID: 8300000, guid: 287e41939344fae438dd58147393b044, type: 3}

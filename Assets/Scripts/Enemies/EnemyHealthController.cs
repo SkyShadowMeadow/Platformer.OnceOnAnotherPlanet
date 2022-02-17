@@ -31,8 +31,6 @@ public class EnemyHealthController : MonoBehaviour
         else
         {
             _currentHealth = EnemyHealthLogic.ApplyDamage(_currentHealth, damage);
-            Debug.Log("DamageProcessed" + _currentHealth);
-            Debug.Log((float)_currentHealth / _maxHealthPoints);
             _healthBar.TransformFillingArea((float)_currentHealth / _maxHealthPoints);
         }
      }

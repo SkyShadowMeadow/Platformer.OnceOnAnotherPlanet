@@ -1,42 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
+using Hero.Data;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerHealthController : MonoBehaviour
+namespace Hero.HealthSystem
 {
-    public event UnityAction playerIsDead;
-
-    [SerializeField] private PlayerHealthView _healthView;
-    [SerializeField] private PlayerData _playerData;
-    private float _currentHealthPoints;
-    private AudioSource _audioSource;
-
-    private void Awake()
+    public class PlayerHealthController : MonoBehaviour
     {
-        _currentHealthPoints = _playerData.HealthPoints;
-        _audioSource = GetComponent<AudioSource>();
-    }
-    
+        public event UnityAction playerIsDead;
 
-    public void HandleDamage(float damage) 
-    {
-        _currentHealthPoints = PlayerHealthLogic.ApplyDamage(_currentHealthPoints, damage);
-        _audioSource.PlayOneShot(_playerData.ApplyDamageSound);
-        if (_currentHealthPoints <= 0) playerIsDead?.Invoke();
+        [SerializeField] private PlayerHealthView _healthView;
+        [SerializeField] private PlayerData _playerData;
+        private float _currentHealthPoints;
+        private AudioSource _audioSource;
 
-        else if (_currentHealthPoints % 1 == 0)
-            _healthView.RemoveWholeHearts(_currentHealthPoints);
+        private void Awake()
+        {
+            _currentHealthPoints = _playerData.HealthPoints;
+            _audioSource = GetComponent<AudioSource>();
+        }
+        
+        private void OnEnable()
+            => HitEvent.OnHitEvent += HandleDamage;
+        
+        void Start()
+            => _healthView.ShowHearts(_currentHealthPoints);
+        
 
-        else _healthView.RemoveHalfHearts(_currentHealthPoints);
-    }
+        public void HandleDamage(float damage) 
+        {
+            _currentHealthPoints = PlayerHealthLogic.ApplyDamage(_currentHealthPoints, damage);
+            _audioSource.PlayOneShot(_playerData.ApplyDamageSound);
+            if (_currentHealthPoints <= 0)
+            {
+                _healthView.RemoveAllHearts();
+                playerIsDead?.Invoke();
+            }
 
-    private void OnEnable()
-    {
-        HitEvent.OnHitEvent += HandleDamage;
-    }
-    void Start()
-    {
-        _healthView.ShowHearts(_currentHealthPoints);
+            else if (_currentHealthPoints % 1 == 0)
+                _healthView.RemoveWholeHearts(_currentHealthPoints);
+
+            else _healthView.RemoveHalfHearts(_currentHealthPoints);
+        }
+
     }
 }

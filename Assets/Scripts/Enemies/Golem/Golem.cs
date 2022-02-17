@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Pickups;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -106,7 +107,10 @@ public class Golem : Enemy
     public void PlayDeathRoutine()
     {
         Collider2D[] allColliders = GetComponents<Collider2D>();
-        foreach (Collider2D collider in allColliders) collider.enabled = false;
+        
+        foreach (Collider2D collider in allColliders) 
+            collider.enabled = false;
+        
         _animator.speed = 0;
         enabled = false;
     }

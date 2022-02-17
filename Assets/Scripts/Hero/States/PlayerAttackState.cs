@@ -1,3 +1,4 @@
+using Hero.Data;
 using UnityEngine;
 
 namespace Hero.States
@@ -12,7 +13,6 @@ namespace Hero.States
         private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
 
         private AudioSource _audioSource;
-        private bool _attackSoundIsPlaying;
 
         public PlayerAttackState(Player player, PlayerData playerData, Animator animator, InputHandler inputHandler,
             StateChangesTracker stateChangesTracker, AudioSource audioSource)
@@ -36,7 +36,6 @@ namespace Hero.States
         public void OnExit()
         {
             _audioSource.Stop();
-            _attackSoundIsPlaying = false;
             _animator.SetBool(IsAttacking, false);
             _inputHandler.UseAttack();
         }

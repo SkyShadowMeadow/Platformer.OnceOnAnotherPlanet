@@ -1,3 +1,4 @@
+using Hero.Data;
 using UnityEngine;
 
 namespace Hero.States

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Hero.HealthSystem;
+using UnityEngine;
 
 namespace Logic.DamageLogic
 {

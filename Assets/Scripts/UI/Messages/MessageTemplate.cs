@@ -1,15 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Message", menuName = "Create Message")]
-
-public class MessageTemplate : ScriptableObject
+namespace UI.Messages
 {
+    [CreateAssetMenu(fileName = "Message", menuName = "Create Message")]
 
-    [SerializeField] 
-    [TextArea(6, 10)]
-    private string _messageText = "Type some text";
+    public class MessageTemplate : ScriptableObject
+    {
 
-    public string GetMessageText() => _messageText;
+        [SerializeField] 
+        [TextArea(6, 10)]
+        private string _messageText = "Type some text";
+
+        public string GetMessageText() => _messageText;
+    }
 }

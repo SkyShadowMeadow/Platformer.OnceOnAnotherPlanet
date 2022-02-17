@@ -1,6 +1,7 @@
 ﻿using Logic.DamageLogic;
 using UnityEngine;
 using Enemies.EnemyData;
+using Hero.HealthSystem;
 
 namespace Enemies
 {

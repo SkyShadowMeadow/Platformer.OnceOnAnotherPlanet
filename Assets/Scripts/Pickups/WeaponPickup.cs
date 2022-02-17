@@ -1,36 +1,38 @@
 using Hero;
 using UnityEngine;
 
-public class WeaponPickup : PickUp
+namespace Pickups
 {
-    [SerializeField] private GameObject _vfxOnTakeParticles;
-
-    private float lifetime = 0.7f;
-    private ParticleSystem _onTakenParticles;
-    private AudioSource _onTakenSound;
-
-    void Start()
+    public class WeaponPickup : PickUp
     {
-        _onTakenParticles = _vfxOnTakeParticles.GetComponent<ParticleSystem>();
-        _onTakenSound = GetComponent<AudioSource>();
-    }
+        [SerializeField] private GameObject _vfxOnTakeParticles;
 
+        private float lifetime = 0.7f;
+        private ParticleSystem _onTakenParticles;
+        private AudioSource _onTakenSound;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent(out Player player))
+        void Start()
         {
-            player.gameObject.GetComponent<PickUpHandler>().TakeWeapon();
-            PlayTakenRoutine();
-            //_inventory.TakeOre();
+            _onTakenParticles = _vfxOnTakeParticles.GetComponent<ParticleSystem>();
+            _onTakenSound = GetComponent<AudioSource>();
         }
-    }
-    private void PlayTakenRoutine()
-    {
-        this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
-        _onTakenParticles.Play();
-        _onTakenSound.Play();
 
-        Destroy(gameObject, lifetime);
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent(out Player player))
+            {
+                player.gameObject.GetComponent<PickUpHandler>().TakeWeapon();
+                PlayTakenRoutine();
+            }
+        }
+        private void PlayTakenRoutine()
+        {
+            this.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            _onTakenParticles.Play();
+            _onTakenSound.Play();
+
+            Destroy(gameObject, lifetime);
+        }
     }
 }

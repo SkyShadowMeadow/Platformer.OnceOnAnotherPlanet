@@ -1,30 +1,32 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Hero;
 using TMPro;
 using UnityEngine;
 
-public class RepresantationOfChangesOnUI : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private TextMeshProUGUI _howManyOres;
-    [SerializeField] private  PickUpHandler _pickUpHandler;
+    public class RepresantationOfChangesOnUI : MonoBehaviour
+    {
+        [SerializeField] private TextMeshProUGUI _howManyOres;
+        [SerializeField] private  PickUpHandler _pickUpHandler;
+        [SerializeField] private  Canvas _gameOverCanvas;
 
-    private void OnEnable()
-    {
-        _pickUpHandler.OnOreTaken += GetNumberOfOresOnUI;
+        private void OnEnable()
+        {
+            _pickUpHandler.OnOreTaken += GetNumberOfOresOnUI;
+            AnimationEventsHandler.OnPlayerDied += ShowGameOver;
+        }
+        private void OnDisable()
+            => _pickUpHandler.OnOreTaken -= GetNumberOfOresOnUI;
+        
+        void Start()
+            => GetNumberOfOresOnUI();
+        
+        private void ShowGameOver()
+        {
+            _gameOverCanvas.gameObject.SetActive(true);
+        }
+        
+        public void GetNumberOfOresOnUI()
+            => _howManyOres.text = _pickUpHandler.NumberCollected.ToString();
     }
-    private void OnDisable()
-    {
-        _pickUpHandler.OnOreTaken -= GetNumberOfOresOnUI;
-    }
-    void Start()
-    {
-        GetNumberOfOresOnUI();
-    }
-    public void GetNumberOfOresOnUI()
-    {
-        _howManyOres.text = _pickUpHandler.NumberCollected.ToString();
-    }
-
 }

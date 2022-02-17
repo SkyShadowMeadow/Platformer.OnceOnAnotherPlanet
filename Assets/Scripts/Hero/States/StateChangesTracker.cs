@@ -1,3 +1,4 @@
+using Hero.HealthSystem;
 using UnityEngine;
 
 namespace Hero.States

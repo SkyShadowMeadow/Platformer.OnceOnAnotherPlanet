@@ -1,16 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Quests;
 using TMPro;
 using UnityEngine;
 
-public class QuestProgress : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private QuantityCondition _quantityCondition;
-    [SerializeField] private TextMeshProUGUI _text;
+    public class QuestProgress : MonoBehaviour
+    {
+        [SerializeField] private QuantityCondition _quantityCondition;
+        [SerializeField] private TextMeshProUGUI _text;
 
-    private void Awake()
-        => _text.text = "/" + _quantityCondition.NumberToWin.ToString();
+        private void Awake()
+            => _text.text = "/" + _quantityCondition.NumberToWin.ToString();
     
+    }
 }

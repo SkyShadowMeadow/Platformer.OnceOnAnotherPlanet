@@ -3,36 +3,39 @@ using InteractableObjects;
 using TMPro;
 using UnityEngine;
 
-public class PopUpMessage : MonoBehaviour
+namespace UI.Messages
 {
-    [SerializeField] private TextMeshProUGUI textMeshProUGUI;
-
-    private float _delayToDeactivate = 1f;
-
-    private void OnEnable()
+    public class PopUpMessage : MonoBehaviour
     {
-        InfoPost.OnMessageSent += GetMessageFromTheInfoPost;
-        FinishLevelCondition.OnFinishMessageSent += GetMessageFromTheInfoPost;
-    }
+        [SerializeField] private TextMeshProUGUI textMeshProUGUI;
 
-    private void OnDisable()
-    {
-        InfoPost.OnMessageSent -= GetMessageFromTheInfoPost;
-        FinishLevelCondition.OnFinishMessageSent -= GetMessageFromTheInfoPost;
-    }
+        private float _delayToDeactivate = 1f;
 
-    public void ActivateCanvas()
-        => gameObject.SetActive(true);
+        private void OnEnable()
+        {
+            InfoPost.OnMessageSent += GetMessageFromTheInfoPost;
+            FinishLevelCondition.OnFinishMessageSent += GetMessageFromTheInfoPost;
+        }
+
+        private void OnDisable()
+        {
+            InfoPost.OnMessageSent -= GetMessageFromTheInfoPost;
+            FinishLevelCondition.OnFinishMessageSent -= GetMessageFromTheInfoPost;
+        }
+
+        public void ActivateCanvas()
+            => gameObject.SetActive(true);
     
-    public void DesactivateCanvas()
-        => StartCoroutine(DesactivateCanvasWithDelay());
+        public void DesactivateCanvas()
+            => StartCoroutine(DesactivateCanvasWithDelay());
     
-    public void GetMessageFromTheInfoPost(string messageText)
-        => textMeshProUGUI.text = messageText;
+        public void GetMessageFromTheInfoPost(string messageText)
+            => textMeshProUGUI.text = messageText;
 
-    IEnumerator DesactivateCanvasWithDelay()
-    {
-        yield return new WaitForSeconds(_delayToDeactivate);
-        gameObject.SetActive(false);
+        IEnumerator DesactivateCanvasWithDelay()
+        {
+            yield return new WaitForSeconds(_delayToDeactivate);
+            gameObject.SetActive(false);
+        }
     }
 }

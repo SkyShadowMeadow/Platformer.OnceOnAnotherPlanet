@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,7 +24,6 @@ public class InputHandler : MonoBehaviour
         if (value.isPressed)
         {
             CountOfJump++;
-            Debug.Log("Jumps " + CountOfJump);
             JumpIsStarted = true;
             _startJump = Time.time;
         }
