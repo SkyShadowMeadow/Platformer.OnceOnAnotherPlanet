@@ -67,13 +67,16 @@ namespace Hero
             At(JumpState, LandedState, HasFinishedTheJump());
             At(JumpState, MovingState, HasMovedRightAfterJump());
             At(JumpState, DeathState, HasDied());
+            At(JumpState, PlayerAttackState, CanAttack());
 
             At(LandedState, IdlingState, HasLanded());
             At(LandedState, MovingState, HasStartedToMove());
+            At(LandedState, PlayerAttackState, CanAttack());
             At(LandedState, DeathState, HasDied());
 
             At(PlayerAttackState, IdlingState, AttackIsFinished());
             At(PlayerAttackState, MovingState, AttackIsFinishedAndMove());
+            At(PlayerAttackState, LandedState, HasFinishedTheJump());
             At(PlayerAttackState, DeathState, HasDied());
 
             At(ClimbingState, IdlingState, HasReachedTheGround());
